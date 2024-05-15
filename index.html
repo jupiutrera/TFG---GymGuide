@@ -28,6 +28,21 @@
       <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+      <style>
+         .text-content {
+             max-height: 200px; /* Altura máxima para el texto resumido */
+             overflow: hidden; /* Esconde el texto que excede la altura máxima */
+             transition: max-height 0.5s ease;
+         }
+         .text-content.expanded {
+             max-height: 1000px; /* Altura máxima cuando está expandido */
+         }
+         .read_more {
+             cursor: pointer;
+             color: blue;
+             text-decoration: underline;
+         }
+     </style>
    </head>
    <!-- body -->
    <body class="main-layout">
@@ -149,28 +164,34 @@
                </div>
                <div class="col-md-7">
                   <div class="titlepage">
-                     <h2>Sobre nuestra WEB</h2>
-                     <p>
-                        <h3>Bienvenido a GYMGUIDE</h3>
-                        En GYMGUIDE, estamos comprometidos con tu éxito en el mundo del fitness y el bienestar. Nuestra pasión por la salud y la forma física nos impulsa a ofrecerte una experiencia única y personalizada que te ayudará a alcanzar tus metas, superar tus límites y vivir una vida más saludable y feliz. <br>
-                        
-                        <br><h4>Nuestra Misión</h4>
-                        Nuestra misión es simple pero poderosa: queremos ser tu compañero de confianza en tu viaje hacia una vida más activa y saludable. Nos esforzamos por proporcionarte las herramientas, el apoyo y la motivación necesarios para que te sientas seguro, inspirado y capacitado para alcanzar tus objetivos de fitness, ya sea perder peso, aumentar tu fuerza, mejorar tu resistencia o simplemente adoptar un estilo de vida más activo. <br>
-                        
-                        <br><h4>¿Qué nos hace diferentes?</h4>
-                        En GYMGUIDE, nos enorgullece ofrecer una experiencia única que se distingue por: <br> <br>
-                        
-                        <b>Entrenadores altamente calificados y dedicados:</b> Nuestro equipo de entrenadores está formado por profesionales apasionados y altamente capacitados que están comprometidos con tu éxito. Ellos trabajarán contigo para desarrollar un plan de entrenamiento personalizado que se adapte a tus necesidades, habilidades y objetivos específicos.
-                        <br><br><b>Suplementación de calidad:</b> Nos asociamos con las marcas líderes en el mercado para ofrecerte una amplia gama de suplementos de alta calidad que complementarán tu dieta y maximizarán tus resultados.
-                        <br><br><b>Inteligencia Artificial personalizada:</b> Nuestra IA avanzada está diseñada para proporcionarte una guía personalizada y adaptativa en tu viaje de fitness. Aprovechando la última tecnología, nuestra IA analiza tus datos y preferencias individuales para ofrecerte recomendaciones precisas y efectivas que te ayudarán a optimizar tus entrenamientos y alcanzar tus objetivos más rápido.
-                        <br> <br><b>¿Por qué elegirnos?</b>
-                        En GYMGUIDE, nos esforzamos por ofrecerte mucho más que un simple lugar para hacer ejercicio. Aquí, encontrarás una comunidad acogedora y solidaria de personas que comparten tu pasión por el fitness y están comprometidas con su bienestar. Nuestro enfoque holístico hacia el fitness abarca no solo el ejercicio físico, sino también la nutrición, el bienestar mental y emocional, y la conexión con los demás.
-                        
-                        <br> <br>Únete a nosotros hoy mismo
-                        Ya sea que seas un principiante absoluto o un atleta experimentado, te damos la bienvenida a unirte a nosotros en GYMGUIDE. Descubre cómo podemos ayudarte a alcanzar tus metas de fitness y transformar tu vida para mejor. ¡Únete a nuestra comunidad hoy mismo y déjanos ayudarte a alcanzar tu máximo potencial!</p>
+                      <h2>Sobre nuestra WEB</h2>
+                      <div class="text-content" id="text-content">
+                          <h3>Bienvenido a GYMGUIDE</h3>
+                          En GYMGUIDE, estamos comprometidos con tu éxito en el mundo del fitness y el bienestar. Nuestra pasión por la salud y la forma física nos impulsa a ofrecerte una experiencia única y personalizada que te ayudará a alcanzar tus metas, superar tus límites y vivir una vida más saludable y feliz. <br>
+                          
+                          <br><h4>Nuestra Misión</h4>
+                          Nuestra misión es simple pero poderosa: queremos ser tu compañero de confianza en tu viaje hacia una vida más activa y saludable. Nos esforzamos por proporcionarte las herramientas, el apoyo y la motivación necesarios para que te sientas seguro, inspirado y capacitado para alcanzar tus objetivos de fitness, ya sea perder peso, aumentar tu fuerza, mejorar tu resistencia o simplemente adoptar un estilo de vida más activo. <br>
+                          
+                          <br><h4>¿Qué nos hace diferentes?</h4>
+                          En GYMGUIDE, nos enorgullece ofrecer una experiencia única que se distingue por: <br> <br>
+                          
+                          <b>Entrenadores altamente calificados y dedicados:</b> Nuestro equipo de entrenadores está formado por profesionales apasionados y altamente capacitados que están comprometidos con tu éxito. Ellos trabajarán contigo para desarrollar un plan de entrenamiento personalizado que se adapte a tus necesidades, habilidades y objetivos específicos.
+                          <br><br><b>Suplementación de calidad:</b> Nos asociamos con las marcas líderes en el mercado para ofrecerte una amplia gama de suplementos de alta calidad que complementarán tu dieta y maximizarán tus resultados.
+                          </div>
+                      <a class="read_more" id="read-more">Leer más</a>
                   </div>
-                  <a class="read_more" href="#">Leer más</a>
                </div>
+               <script>
+                  document.getElementById('read-more').addEventListener('click', function() {
+                      var textContent = document.getElementById('text-content');
+                      textContent.classList.toggle('expanded');
+                      if (textContent.classList.contains('expanded')) {
+                          this.textContent = 'Leer menos';
+                      } else {
+                          this.textContent = 'Leer más';
+                      }
+                  });
+              </script>          
             </div>
          </div>
       </div>
@@ -400,9 +421,8 @@
                <div class="row">
                   <div class="col-md-8 offset-md-2">
                      <ul class="location_icon">
-                        <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> Localización</li>
-                        <li><a href="#"><i class="fa fa-phone" aria-hidden="true"></i></a><br> +34 693242825</li>
-                        <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> gymguidecontacto@gmail.com</li>
+                        <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                        <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
                      </ul>
                   </div>
                </div>
@@ -411,7 +431,7 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <p>© 2024 Todos los derechos reservados. Diseñado por<a href="https://html.design/"> GymGuide</a></p>                     </div>
+                        <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>                     </div>
                   </div>
                </div>
             </div>
