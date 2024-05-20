@@ -78,7 +78,7 @@ $conn->close();
                         <div class="full">
                             <div class="center-desk">
                                 <div class="logo">
-                                    <a href="index.html" class="brand-logo"><img src="images/logo.png" alt="#" /><p>GymGuide</p></a>
+                                    <a href="index.php" class="brand-logo"><img src="images/logo.png" alt="#" /><p>GymGuide</p></a>
                                 </div>
                             </div>
                         </div>
