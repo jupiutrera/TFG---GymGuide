@@ -8,32 +8,37 @@
     <title>Login - GymGuide</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        header, footer {
+            flex-shrink: 0; /* Evita que header y footer se reduzcan */
+        }
+        .login-section {
+            flex: 1; /* Ocupa el espacio restante */
+            display: flex;
+            align-items: center; /* Centra verticalmente el contenido de login */
+            justify-content: center; /* Centra horizontalmente */
+            padding-top: 100px;
+        }
+        .form-wrapper {
+            width: 100%; /* O ajusta según necesidades específicas */
+            max-width: 400px; /* Máximo ancho del formulario */
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            font-size: 0.875em;
+        }
+    </style>
 </head>
-<style>
-    body, html {
-        height: 100%;
-        margin: 0;
-    }
-    .main-layout {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-    header, footer {
-        flex-shrink: 0; /* Evita que header y footer se reduzcan */
-    }
-    .login-section {
-        flex: 1; /* Ocupa el espacio restante */
-        display: flex;
-        align-items: center; /* Centra verticalmente el contenido de login */
-        justify-content: center; /* Centra horizontalmente */
-        padding-top: 100px;
-    }
-    .form-wrapper {
-        width: 100%; /* O ajusta según necesidades específicas */
-        max-width: 400px; /* Máximo ancho del formulario */
-    }
-</style>
 
 <body class="main-layout">
     <header>
@@ -80,7 +85,7 @@
                                         <a class="nav-link" href="contact.html">Contacto</a>
                                     </li>
                                     <li class="nav-item d_none login_btn">
-                                        <a class="nav-link" href="login.html">Iniciar sesión</a>
+                                        <a class="nav-link" href="login.php">Iniciar sesión</a>
                                     </li>
                                     <li class="nav-item d_none">
                                         <a class="nav-link" href="registro.php">Registro</a>
@@ -94,18 +99,80 @@
         </div>
     </header>
 
+    <?php
+    // Habilitar la visualización de errores
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+    // Inicializar variables para almacenar mensajes de error
+    $username_error = $password_error = $general_error = "";
+
+    // Inicializar variables para mantener los valores ingresados
+    $username = "";
+
+    // Configuración de la base de datos
+    $servername = "db5015817129.hosting-data.io";
+    $username_db = "dbu3154185";
+    $password_db = "A1234567.tfg";
+    $dbname = "dbs12897556";
+
+    // Crear conexión
+    $conn = new mysqli($servername, $username_db, $password_db, $dbname);
+
+    // Verificar conexión
+    if ($conn->connect_error) {
+        $general_error = "Connection failed: " . $conn->connect_error;
+    } else {
+        // Verificar si el formulario fue enviado
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Obtener los datos del formulario
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            // Verificar que el nombre de usuario existe en la tabla `gymguide_usuarios`
+            $sql_check_user = "SELECT Passwd FROM gymguide_usuarios WHERE Nom_usu = ?";
+            $stmt_check_user = $conn->prepare($sql_check_user);
+            $stmt_check_user->bind_param("s", $username);
+            $stmt_check_user->execute();
+            $stmt_check_user->bind_result($hashed_password);
+            $stmt_check_user->fetch();
+            $stmt_check_user->close();
+
+            if ($hashed_password) {
+                // Verificar la contraseña
+                if (password_verify($password, $hashed_password)) {
+                    // Redirigir al usuario a la página de inicio
+                    header("Location: /index.html");
+                    exit();
+                } else {
+                    $password_error = "Contraseña incorrecta.";
+                }
+            } else {
+                $username_error = "El nombre de usuario no existe.";
+            }
+        }
+
+        // Cerrar la conexión
+        $conn->close();
+    }
+    ?>
+
     <section class="login-section">
         <div class="container">
             <div class="form-wrapper">
                 <h3>Login</h3>
-                <form action="submit_login.php" method="POST">
+                <?php if (!empty($general_error)) { echo "<p class='error-message'>$general_error</p>"; } ?>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                     <div class="form-group">
                         <label for="username">Nombre de usuario:</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required>
+                        <?php if (!empty($username_error)) { echo "<p class='error-message'>$username_error</p>"; } ?>
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña:</label>
                         <input type="password" class="form-control" id="password" name="password" required>
+                        <?php if (!empty($password_error)) { echo "<p class='error-message'>$password_error</p>"; } ?>
                     </div>
                     <button type="submit" class="btn btn-primary">Entrar</button>
                 </form>
