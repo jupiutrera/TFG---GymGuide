@@ -16,6 +16,12 @@ session_start();
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+	<style>
+      .product-section{
+      	margin-top: 100px;
+        margin-bottom: 100px;
+      }
+  	</style>
 </head>
 <body class="main-layout position_head">
     <header>
@@ -80,9 +86,21 @@ session_start();
             </div>
         </div>
     </header>
-<!-- Product Section -->
-
-
+	<!-- Product Section -->
+<section class="product-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <p>Su carrito está vacío</p>
+                <?php else: ?>
+                    <p>No puede acceder al carrito sin iniciar sesión</p>
+                    <a class="btn btn-primary" href="login.php">Iniciar sesión</a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</section>
     <!-- Footer -->
     <footer>
         <div class="footer">

@@ -59,18 +59,66 @@ $conn->close();
             width: 100%;
             text-align: left;
             font-size: 18px;
+            transition: background-color 0.3s;
         }
 
         .category-btn:hover {
             background-color: black;
+            color: white;
         }
 
         .product-list {
             display: none; /* Oculto por defecto */
+            margin-bottom: 20px;
         }
 
         .product-list.active {
             display: block; /* Mostrar cuando está activo */
+        }
+
+        .product-item {
+            background: #fff;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .product-item h4 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .product-item p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .product-item .btn {
+            background-color: #03cafc;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .product-item .btn:hover {
+            background-color: black;
         }
     </style>
 </head>
@@ -137,69 +185,67 @@ $conn->close();
             </div>
         </div>
     </header>
-<!-- Product Section -->
-<section class="product-section">
-   <div class="container">
-       <?php foreach ($productos_por_categoria as $categoria => $productos): ?>
-           <button class="category-btn"><?php echo htmlspecialchars($categoria); ?></button>
-           <div class="product-list">
-               <div class="row">
-                   <?php foreach ($productos as $producto): ?>
-                       <div class="col-md-4">
-                           <div class="product-item">
-                               <img src="images/shop/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
-                               <center><h4><?php echo htmlspecialchars($producto['Producto']); ?></h4></center>
-                               <p><?php echo htmlspecialchars($producto['Descripcion']); ?></p>
-                               <p>
-                                   <?php
-                                   if ($producto['Precio'] == 0) {
-                                       echo "Gratis";
-                                   } else {
-                                       echo "€" . number_format($producto['Precio'], 2, ',', '.');
-                                   }
-                                   ?>
-                               </p>
-                           	   <?php if (isset($_SESSION['user_id'])): ?>
-                               <li class="nav-item">
-                               		<button class="btn btn-primary">Añadir al Carrito</button>
-                               </li>
-                               <?php else: ?>
-							   		<form action="login.php">
-                                        <input class="btn btn-primary" type="submit" value="Añadir al Carrito" />
-									</form>
-                               <?php endif; ?>
-                           </div>
-                       </div>
-                   <?php endforeach; ?>
-               </div>
-           </div>
-       <?php endforeach; ?>
-   </div>
-</section>
-
+    <!-- Product Section -->
+    <section class="product-section">
+        <div class="container">
+            <?php foreach ($productos_por_categoria as $categoria => $productos): ?>
+                <button class="category-btn"><?php echo htmlspecialchars($categoria); ?></button>
+                <div class="product-list">
+                    <div class="row">
+                        <?php foreach ($productos as $producto): ?>
+                            <div class="col-md-4">
+                                <div class="product-item">
+                                    <img src="images/shop/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
+                                    <h4><?php echo htmlspecialchars($producto['Producto']); ?></h4>
+                                    <p><?php echo htmlspecialchars($producto['Descripcion']); ?></p>
+                                    <p>
+                                        <?php
+                                        if ($producto['Precio'] == 0) {
+                                            echo "Gratis";
+                                        } else {
+                                            echo "€" . number_format($producto['Precio'], 2, ',', '.');
+                                        }
+                                        ?>
+                                    </p>
+                                    <?php if (isset($_SESSION['user_id'])): ?>
+                                        <button class="btn btn-primary">Añadir al Carrito</button>
+                                    <?php else: ?>
+                                        <form action="login.php">
+                                            <input class="btn btn-primary" type="submit" value="Añadir al Carrito" />
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
     <!-- Footer -->
     <footer>
         <div class="footer">
-           <div class="container">
-              <div class="row">
-                 <div class="col-md-8 offset-md-2">
-                    <ul class="location_icon">
-                       <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                       <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
-                    </ul>
-                 </div>
-              </div>
-           </div>
-           <div class="copyright">
-              <div class="container">
-                 <div class="row">
-                    <div class="col-md-12">
-                       <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>                     </div>
-                 </div>
-              </div>
-           </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <ul class="location_icon">
+                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-     </footer>
+    </footer>
     <!-- Javascript files-->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
