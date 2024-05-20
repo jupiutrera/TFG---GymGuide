@@ -16,6 +16,47 @@ session_start();
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <style>
+        .text-content {
+            max-height: 200px;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        .text-content.expanded {
+            max-height: 1000px; /* Ajusta según sea necesario para el contenido completo */
+        }
+
+        .read_more {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+        /* Botón de Volver Arriba */
+        #topBtn {
+            display: none; /* Oculto por defecto */
+            position: fixed; /* Fijo en la pantalla */
+            bottom: 20px; /* A 20px del fondo */
+            right: 30px; /* A 30px de la derecha */
+            z-index: 99; /* Asegúrate de que esté por encima de otros elementos */
+            border: none; /* Sin borde */
+            outline: none; /* Sin outline */
+            background-color: #007bff; /* Color de fondo azul */
+            color: white; /* Color de texto blanco */
+            cursor: pointer; /* Cursor de mano */
+            width: 50px; /* Ancho */
+            height: 50px; /* Alto */
+            border-radius: 50%; /* Bordes redondeados para que sea circular */
+            font-size: 18px; /* Tamaño de la flecha */
+            text-align: center; /* Centra el contenido horizontalmente */
+            line-height: 50px; /* Centra el contenido verticalmente */
+        }
+
+        #topBtn:hover {
+            background-color: black; /* Color de fondo negro al pasar el cursor */
+            color: white; /* Color de texto blanco */
+        }
+    </style>
 </head>
 <body class="main-layout position_head">
     <header>
@@ -81,280 +122,276 @@ session_start();
         </div>
     </header>
 
-      <!-- banner -->
-      <section class="banner_main">
-         <div id="banner1" class="carousel slide" data-ride="carousel">
+    <!-- banner -->
+    <section class="banner_main">
+        <div id="banner1" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-               <li data-target="#banner1" data-slide-to="0" class="active"></li>
-               <li data-target="#banner1" data-slide-to="1"></li>
-               <li data-target="#banner1" data-slide-to="2"></li>
+                <li data-target="#banner1" data-slide-to="0" class="active"></li>
+                <li data-target="#banner1" data-slide-to="1"></li>
+                <li data-target="#banner1" data-slide-to="2"></li>
             </ol>
             <div class="carousel-inner">
-               <div class="carousel-item active">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="text-bg">
-                           <h1> <span class="blu">BIENVENIDO <br></span>A GymGuide</h1>
-                           <figure><img src="images/Bienvenido.webp" alt="#"width="750px"/></figure>
-                           <a class="read_more" href="shop.php">Ir a la tienda</a>
+                <div class="carousel-item active">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <div class="text-bg">
+                                <h1> <span class="blu">BIENVENIDO <br></span>A GymGuide</h1>
+                                <figure><img src="images/Bienvenido.webp" alt="#" width="750px"/></figure>
+                                <a class="read_more" href="shop.php">Ir a la tienda</a>
+                            </div>
                         </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="text-bg">
-                           <h1> <span class="blu">LOS MEJORES <br></span>Planes y cursos</h1>
-                           <figure><img src="images/Planescursos.webp" alt="#"width="750px"/></figure>
-                           <a class="read_more" href="shop.php">Ir a la tienda</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <div class="text-bg">
+                                <h1> <span class="blu">LOS MEJORES <br></span>Planes y cursos</h1>
+                                <figure><img src="images/Planescursos.webp" alt="#" width="750px"/></figure>
+                                <a class="read_more" href="shop.php">Ir a la tienda</a>
+                            </div>
                         </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="carousel-item">
-                  <div class="container">
-                     <div class="carousel-caption">
-                        <div class="text-bg">
-                           <h1> <span class="blu">RUTINAS <br></span>y dietas</h1>
-                           <figure><img src="images/Dietas.webp" alt="#"width="750px"/></figure>
-                           <a class="read_more" href="shop.php">Ir a la tienda</a>
-                        </div>a c
-                     </div>
-                  </div>
-               </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <div class="text-bg">
+                                <h1> <span class="blu">RUTINAS <br></span>y dietas</h1>
+                                <figure><img src="images/Dietas.webp" alt="#" width="750px"/></figure>
+                                <a class="read_more" href="shop.php">Ir a la tienda</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <a class="carousel-control-prev" href="#banner1" role="button" data-slide="prev">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </a>
             <a class="carousel-control-next" href="#banner1" role="button" data-slide="next">
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
             </a>
-         </div>
-      </section>
-      <!-- end banner -->
-      <!-- about section -->
-      <div class="about">
-         <div class="container">
+        </div>
+    </section>
+    <!-- end banner -->
+    <!-- about section -->
+    <div class="about">
+        <div class="container">
             <div class="row d_flex">
-               <div class="col-md-5">
-                  <div class="about_img">
-                     <figure><img src="images/Default_Un_hombre_humano_levantando_una_macuerna_entrenando_bi_0.png" alt="#"/></figure>
-                  </div>
-               </div>
-               <div class="col-md-7">
-                  <div class="titlepage">
-                      <h2>Sobre nuestra WEB</h2>
-                      <div class="text-content" id="text-content">
-                          <h3>Bienvenido a GYMGUIDE</h3>
-                          En GYMGUIDE, estamos comprometidos con tu éxito en el mundo del fitness y el bienestar. Nuestra pasión por la salud y la forma física nos impulsa a ofrecerte una experiencia única y personalizada que te ayudará a alcanzar tus metas, superar tus límites y vivir una vida más saludable y feliz. <br>
-                          
-                          <br><h4>Nuestra Misión</h4>
-                          Nuestra misión es simple pero poderosa: queremos ser tu compañero de confianza en tu viaje hacia una vida más activa y saludable. Nos esforzamos por proporcionarte las herramientas, el apoyo y la motivación necesarios para que te sientas seguro, inspirado y capacitado para alcanzar tus objetivos de fitness, ya sea perder peso, aumentar tu fuerza, mejorar tu resistencia o simplemente adoptar un estilo de vida más activo. <br>
-                          
-                          <br><h4>¿Qué nos hace diferentes?</h4>
-                          En GYMGUIDE, nos enorgullece ofrecer una experiencia única que se distingue por: <br> <br>
-                          
-                          <b>Entrenadores altamente calificados y dedicados:</b> Nuestro equipo de entrenadores está formado por profesionales apasionados y altamente capacitados que están comprometidos con tu éxito. Ellos trabajarán contigo para desarrollar un plan de entrenamiento personalizado que se adapte a tus necesidades, habilidades y objetivos específicos.
-                          <br><br><b>Suplementación de calidad:</b> Nos asociamos con las marcas líderes en el mercado para ofrecerte una amplia gama de suplementos de alta calidad que complementarán tu dieta y maximizarán tus resultados.
-                          </div>
-                      <a class="read_more" id="read-more">Leer más</a>
-                  </div>
-               </div>
-               <script>
-                  document.getElementById('read-more').addEventListener('click', function() {
-                      var textContent = document.getElementById('text-content');
-                      textContent.classList.toggle('expanded');
-                      if (textContent.classList.contains('expanded')) {
-                          this.textContent = 'Leer menos';
-                      } else {
-                          this.textContent = 'Leer más';
-                      }
-                  });
-              </script>          
+                <div class="col-md-5">
+                    <div class="about_img">
+                        <figure><img src="images/Default_Un_hombre_humano_levantando_una_macuerna_entrenando_bi_0.png" alt="#"/></figure>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="titlepage">
+                        <h2>Sobre nuestra WEB</h2>
+                        <div class="text-content" id="text-content">
+                            <h3>Bienvenido a GYMGUIDE</h3>
+                            En GYMGUIDE, estamos comprometidos con tu éxito en el mundo del fitness y el bienestar. Nuestra pasión por la salud y la forma física nos impulsa a ofrecerte una experiencia única y personalizada que te ayudará a alcanzar tus metas, superar tus límites y vivir una vida más saludable y feliz. <br>
+                            <br><h4>Nuestra Misión</h4>
+                            Nuestra misión es simple pero poderosa: queremos ser tu compañero de confianza en tu viaje hacia una vida más activa y saludable. Nos esforzamos por proporcionarte las herramientas, el apoyo y la motivación necesarios para que te sientas seguro, inspirado y capacitado para alcanzar tus objetivos de fitness, ya sea perder peso, aumentar tu fuerza, mejorar tu resistencia o simplemente adoptar un estilo de vida más activo. <br>
+                            <br><h4>¿Qué nos hace diferentes?</h4>
+                            En GYMGUIDE, nos enorgullece ofrecer una experiencia única que se distingue por: <br> <br>
+                            <b>Entrenadores altamente calificados y dedicados:</b> Nuestro equipo de entrenadores está formado por profesionales apasionados y altamente capacitados que están comprometidos con tu éxito. Ellos trabajarán contigo para desarrollar un plan de entrenamiento personalizado que se adapte a tus necesidades, habilidades y objetivos específicos.
+                            <br><br><b>Suplementación de calidad:</b> Nos asociamos con las marcas líderes en el mercado para ofrecerte una amplia gama de suplementos de alta calidad que complementarán tu dieta y maximizarán tus resultados.
+                        </div>
+                        <a class="read_more" id="read-more">Leer más</a>
+                    </div>
+                </div>
+                <script>
+                    document.getElementById('read-more').addEventListener('click', function() {
+                        var textContent = document.getElementById('text-content');
+                        textContent.classList.toggle('expanded');
+                        if (textContent.classList.contains('expanded')) {
+                            this.textContent = 'Leer menos';
+                        } else {
+                            this.textContent = 'Leer más';
+                        }
+                    });
+                </script>
             </div>
-         </div>
-      </div>
-      <!-- about section -->
-      <!-- Our  Glasses section -->
-      <div class="glasses">
-         <div class="container">
+        </div>
+    </div>
+    <!-- about section -->
+    <!-- Our Glasses section -->
+    <div class="glasses">
+        <div class="container">
             <div class="row">
-               <div class="col-md-10 offset-md-1">
-                  <div class="titlepage">
-                     <h2>Our Glasses</h2>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labor
-                        e et dolore magna aliqua. Ut enim ad minim veniam, qui
-                     </p>
-                  </div>
-               </div>
+                <div class="col-md-10 offset-md-1">
+                    <div class="titlepage">
+                        <h2>Our Glasses</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labor
+                            e et dolore magna aliqua. Ut enim ad minim veniam, qui
+                        </p>
+                    </div>
+                </div>
             </div>
-         </div>
-         <div class="container-fluid">
+        </div>
+        <div class="container-fluid">
             <div class="row">
-               <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                  <div class="glasses_box">
-                     <figure><img src="images/glass1.png" alt="#"/></figure>
-                     <h3><span class="blu">$</span>50</h3>
-                     <p>Sunglasses</p>
-                  </div>
-               </div>
-               <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                  <div class="glasses_box">
-                     <figure><img src="images/glass2.png" alt="#"/></figure>
-                     <h3><span class="blu">$</span>50</h3>
-                     <p>Sunglasses</p>
-                  </div>
-               </div>
-               <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                  <div class="glasses_box">
-                     <figure><img src="images/glass3.png" alt="#"/></figure>
-                     <h3><span class="blu">$</span>50</h3>
-                     <p>Sunglasses</p>
-                  </div>
-               </div>
-               <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                  <div class="glasses_box">
-                     <figure><img src="images/glass4.png" alt="#"/></figure>
-                     <h3><span class="blu">$</span>50</h3>
-                     <p>Sunglasses</p>
-                  </div>
-               </div>
-               <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                  <div class="glasses_box">
-                     <figure><img src="images/glass5.png" alt="#"/></figure>
-                     <h3><span class="blu">$</span>50</h3>
-                     <p>Sunglasses</p>
-                  </div>
-               </div>
-               <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                  <div class="glasses_box">
-                     <figure><img src="images/glass6.png" alt="#"/></figure>
-                     <h3><span class="blu">$</span>50</h3>
-                     <p>Sunglasses</p>
-                  </div>
-               </div>
-               <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                  <div class="glasses_box">
-                     <figure><img src="images/glass7.png" alt="#"/></figure>
-                     <h3><span class="blu">$</span>50</h3>
-                     <p>Sunglasses</p>
-                  </div>
-               </div>
-               <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                  <div class="glasses_box">
-                     <figure><img src="images/glass8.png" alt="#"/></figure>
-                     <h3><span class="blu">$</span>50</h3>
-                     <p>Sunglasses</p>
-                  </div>
-               </div>
-               <div class="col-md-12">
-                  <a class="read_more" href="#">Read More</a>
-               </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="glasses_box">
+                        <figure><img src="images/glass1.png" alt="#"/></figure>
+                        <h3><span class="blu">$</span>50</h3>
+                        <p>Sunglasses</p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="glasses_box">
+                        <figure><img src="images/glass2.png" alt="#"/></figure>
+                        <h3><span class="blu">$</span>50</h3>
+                        <p>Sunglasses</p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="glasses_box">
+                        <figure><img src="images/glass3.png" alt="#"/></figure>
+                        <h3><span class="blu">$</span>50</h3>
+                        <p>Sunglasses</p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="glasses_box">
+                        <figure><img src="images/glass4.png" alt="#"/></figure>
+                        <h3><span class="blu">$</span>50</h3>
+                        <p>Sunglasses</p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="glasses_box">
+                        <figure><img src="images/glass5.png" alt="#"/></figure>
+                        <h3><span class="blu">$</span>50</h3>
+                        <p>Sunglasses</p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="glasses_box">
+                        <figure><img src="images/glass6.png" alt="#"/></figure>
+                        <h3><span class="blu">$</span>50</h3>
+                        <p>Sunglasses</p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="glasses_box">
+                        <figure><img src="images/glass7.png" alt="#"/></figure>
+                        <h3><span class="blu">$</span>50</h3>
+                        <p>Sunglasses</p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="glasses_box">
+                        <figure><img src="images/glass8.png" alt="#"/></figure>
+                        <h3><span class="blu">$</span>50</h3>
+                        <p>Sunglasses</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <a class="read_more" href="#">Read More</a>
+                </div>
             </div>
-         </div>
-      </div>
-      <!-- end Our  Glasses section -->
-      <!-- clients section -->
-      <div class="clients">
-         <div class="container">
+        </div>
+    </div>
+    <!-- end Our Glasses section -->
+    <!-- clients section -->
+    <div class="clients">
+        <div class="container">
             <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>Integrantes del grupo</h2>
-                  </div>
-               </div>
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>Integrantes del grupo</h2>
+                    </div>
+                </div>
             </div>
             <div class="row">
-               <div class="col-md-12">
-                  <div id="myCarousel" class="carousel slide clients_Carousel " data-ride="carousel">
-                     <ol class="carousel-indicators">
-                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel" data-slide-to="1"></li>
-                     </ol>
-                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                           <div class="container">
-                              <div class="carousel-caption ">
-                                 <div class="row">
-                                    <div class="col-md-12">
-                                       <div class="clients_box">
-                                          <figure><img src="images/our.png" alt="#"/></figure>
-                                          <h3>Juan Utrera</h3>
-                                          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact  a more-or-less normal distribution of letters,</p>
-                                       </div>
+                <div class="col-md-12">
+                    <div id="myCarousel" class="carousel slide clients_Carousel " data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="container">
+                                    <div class="carousel-caption ">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="clients_box">
+                                                    <figure><img src="images/our.png" alt="#"/></figure>
+                                                    <h3>Juan Utrera</h3>
+                                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact  a more-or-less normal distribution of letters,</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="carousel-item">
-                           <div class="container">
-                              <div class="carousel-caption">
-                                 <div class="row">
-                                    <div class="col-md-12">
-                                       <div class="clients_box">
-                                          <figure><img src="images/our.png" alt="#"/></figure>
-                                          <h3>David Miñano</h3>
-                                          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact  a more-or-less normal distribution of letters,</p>
-                                       </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="clients_box">
+                                                    <figure><img src="images/our.png" alt="#"/></figure>
+                                                    <h3>David Miñano</h3>
+                                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact  a more-or-less normal distribution of letters,</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                 </div>
-                              </div>
-                           </div>
+                                </div>
+                            </div>
                         </div>
-                     </div>
-                     <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                     <i class='fa fa-angle-left'></i>
-                     </a>
-                     <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                     <i class='fa fa-angle-right'></i>
-                     </a>
-                  </div>
-               </div>
+                        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                            <i class='fa fa-angle-left'></i>
+                        </a>
+                        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                            <i class='fa fa-angle-right'></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-      <!-- end clients section -->
-      <!-- contact section -->
-      <div id="contact" class="contact">
-         <div class="container">
+        </div>
+    </div>
+    <!-- end clients section -->
+    <!-- contact section -->
+    <div id="contact" class="contact">
+        <div class="container">
             <div class="row">
-               <div class="col-md-6">
-                  <form id="request" class="main_form">
-                     <div class="row">
-                        <div class="col-md-12 ">
-                           <h3>Contact Us</h3>
+                <div class="col-md-6">
+                    <form id="request" class="main_form">
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <h3>Contact Us</h3>
+                            </div>
+                            <div class="col-md-12 ">
+                                <input class="contactus" placeholder="Name" type="type" name="Name">
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactus" placeholder="Phone Number" type="type" name="Phone Number">
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactus" placeholder="Email" type="type" name="Email">
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactusmess" placeholder="Message" type="type" Message="Name">
+                            </div>
+                            <div class="col-md-12">
+                                <button class="send_btn">Send</button>
+                            </div>
                         </div>
-                        <div class="col-md-12 ">
-                           <input class="contactus" placeholder="Name" type="type" name="Name"> 
-                        </div>
-                        <div class="col-md-12">
-                           <input class="contactus" placeholder="Phone Number" type="type" name="Phone Number"> 
-                        </div>
-                        <div class="col-md-12">
-                           <input class="contactus" placeholder="Email" type="type" name="Email">                          
-                        </div>
-                        <div class="col-md-12">
-                           <input class="contactusmess" placeholder="Message" type="type" Message="Name">
-                        </div>
-                        <div class="col-md-12">
-                           <button class="send_btn">Send</button>
-                        </div>
-                     </div>
-                  </form>
-               </div>
+                    </form>
+                </div>
             </div>
-         </div>
-         <div class="container-fluid">
+        </div>
+        <div class="container-fluid">
             <div class="map_section">
-               <div id="map">
-               </div>
+                <div id="map">
+                </div>
             </div>
-         </div>
-      </div>
-      </div>
-      <!-- end contact section -->
+        </div>
+    </div>
+    <!-- end contact section -->
 
     <footer>
         <div class="footer">
@@ -379,10 +416,37 @@ session_start();
             </div>
         </div>
     </footer>
+    <!-- Botón de Volver Arriba -->
+    <button onclick="topFunction()" id="topBtn" title="Volver arriba">⬆</button>
+
+    <!-- Scripts -->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/custom.js"></script>
+
+    <!-- Script para el botón de Volver Arriba -->
+    <script>
+        // Obtener el botón
+        var topBtn = document.getElementById("topBtn");
+
+        // Cuando el usuario haga scroll hacia abajo 20px desde la parte superior del documento, muestra el botón
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                topBtn.style.display = "block";
+            } else {
+                topBtn.style.display = "none";
+            }
+        }
+
+        // Cuando el usuario haga clic en el botón, desplázate hacia arriba del documento
+        function topFunction() {
+            document.body.scrollTop = 0; // Para Safari
+            document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE y Opera
+        }
+    </script>
 </body>
 </html>
