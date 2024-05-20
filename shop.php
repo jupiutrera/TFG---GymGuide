@@ -1,3 +1,37 @@
+<?php
+// Configuración de la base de datos
+$servername = "db5015817129.hosting-data.io";
+$username = "dbu3154185";
+$password = "tucontraseña"; // Reemplaza con tu contraseña real
+$dbname = "dbs12897556";
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Obtener los productos de la base de datos
+$sql = "SELECT Producto, Categoria, Descripcion, Precio, ID_producto FROM gymguide_tienda";
+$result = $conn->query($sql);
+
+// Inicializar un array para almacenar los productos por categorías
+$productos_por_categoria = [];
+
+if ($result->num_rows > 0) {
+    // Agrupar productos por categoría
+    while($row = $result->fetch_assoc()) {
+        $productos_por_categoria[$row["Categoria"]][] = $row;
+    }
+} else {
+    echo "0 resultados";
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,17 +91,17 @@
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="http://gymguide.es">Home</a>
+                                        <a class="nav-link" href="index.html">Home</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="about.html">Sobre nosotros</a>
                                     </li>
                                     <li class="nav-item dropdown active">
-                                        <a class="nav-link dropdown-toggle" href="shop.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Tienda
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item active" href="shop.html">Productos</a>
+                                            <a class="dropdown-item active" href="shop.php">Productos</a>
                                             <a class="dropdown-item" href="cart.html">Carrito</a>
                                         </div>
                                     </li>
@@ -91,65 +125,22 @@
 <!-- Product Section -->
 <section class="product-section">
    <div class="container">
-       <div class="row">
-           <!-- Product 1 -->
-           <div class="col-md-4">
-               <div class="product-item">
-                   <img src="images/Imagen PPL.webp" class="product-img">
-                   <center><h4>Rutina PPL</h4></center>
-                   <h6>Rutina de entrenamiento Push Pull Leg <br> 6 días semanales</h6>
-                   <p>Gratis</p>
-                   <button class="btn btn-primary">Añadir al Carrito</button>
-               </div>
+       <?php foreach ($productos_por_categoria as $categoria => $productos): ?>
+           <h2><?php echo htmlspecialchars($categoria); ?></h2>
+           <div class="row">
+               <?php foreach ($productos as $producto): ?>
+                   <div class="col-md-4">
+                       <div class="product-item">
+                           <img src="images/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
+                           <center><h4><?php echo htmlspecialchars($producto['Producto']); ?></h4></center>
+                           <p><?php echo htmlspecialchars($producto['Descripcion']); ?></p>
+                           <p>$<?php echo htmlspecialchars($producto['Precio']); ?></p>
+                           <button class="btn btn-primary">Añadir al Carrito</button>
+                       </div>
+                   </div>
+               <?php endforeach; ?>
            </div>
-           <!-- Product 2 -->
-           <div class="col-md-4">
-            <div class="product-item">
-                <img src="images/Imagen PPLxArnoldpng.png" class="product-img">
-                <center><h4>Rutina PPLxArnold</h4></center>
-                <h6>Rutina de entrenamiento Push Pull Leg x Arnold <br> 6 días semanales</h6>
-                <p>Gratis</p>
-                <button class="btn btn-primary">Añadir al Carrito</button>
-            </div>
-        </div>
-           <!-- Product 3 -->
-           <div class="col-md-4">
-            <div class="product-item">
-                <img src="images/Rutina FullBody.png" class="product-img">
-                <center><h4>Rutina FullBody</h4></center>
-                <h6>Rutina de entrenamiento FullBody <br> 3 días semanales</h6>
-                <p>Gratis</p>
-                <button class="btn btn-primary">Añadir al Carrito</button>
-            </div>
-        </div>
-           <!-- Product 4 -->
-           <div class="col-md-4">
-               <div class="product-item">
-                   <img src="images/resistance-bands.jpg" alt="Resistance Bands" class="product-img">
-                   <h4>Resistance Bands</h4>
-                   <p>$15.00</p>
-                   <button class="btn btn-primary">Añadir al Carrito</button>
-               </div>
-           </div>
-           <!-- Product 5 -->
-           <div class="col-md-4">
-               <div class="product-item">
-                   <img src="images/treadmill.jpg" alt="Treadmill" class="product-img">
-                   <h4>Treadmill</h4>
-                   <p>$600.00</p>
-                   <button class="btn btn-primary">Añadir al Carrito</button>
-               </div>
-           </div>
-           <!-- Product 6 -->
-           <div class="col-md-4">
-               <div class="product-item">
-                   <img src="images/exercise-ball.jpg" alt="Exercise Ball" class="product-img">
-                   <h4>Exercise Ball</h4>
-                   <p>$18.00</p>
-                   <button class="btn btn-primary">Añadir al Carrito</button>
-               </div>
-           </div>
-       </div>
+       <?php endforeach; ?>
    </div>
 </section>
 
