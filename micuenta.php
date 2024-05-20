@@ -10,7 +10,7 @@ if (!isset($_SESSION['username'])) {
 // Configuración de la base de datos
 $servername = "db5015817129.hosting-data.io";
 $username = "dbu3154185";
-$password = "tucontraseña";  // Reemplaza con tu contraseña real
+$password = "A1234567.tfg";  // Reemplaza con tu contraseña real
 $dbname = "dbs12897556";
 
 // Crear conexión
