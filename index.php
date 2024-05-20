@@ -56,9 +56,28 @@ session_start();
             background-color: black; /* Color de fondo negro al pasar el cursor */
             color: white; /* Color de texto blanco */
         }
-        section {
-            margin-top: 50px;
-            margin-bottom: 50px;
+        #myCarousel {
+            margin-bottom: 100px;
+        }
+
+        .banner_main {
+            padding-top: 50px; /* Ajusta según sea necesario */
+        }
+
+        header {
+            margin-bottom: 0px; /* Asegúrate de que no haya margen inferior */
+        }
+
+        .carousel {
+            margin-top: 0px; /* Asegúrate de que no haya margen superior */
+        }
+
+        .header {
+            margin-bottom: 0px; /* Asegúrate de que no haya margen inferior */
+        }
+
+        .header .navigation {
+            margin-bottom: 0px; /* Asegúrate de que no haya margen inferior */
         }
     </style>
 </head>
