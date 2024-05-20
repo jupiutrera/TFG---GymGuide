@@ -39,7 +39,7 @@ $conn->close();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GymGuide - Inicio</title>
+    <title>GymGuide - Tienda</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -47,6 +47,32 @@ $conn->close();
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <style>
+        .category-btn {
+            cursor: pointer;
+            background-color: #03cafc;
+            color: white;
+            padding: 10px;
+            border: none;
+            margin-bottom: 10px;
+            display: inline-block;
+            width: 100%;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        .category-btn:hover {
+            background-color: black;
+        }
+
+        .product-list {
+            display: none; /* Oculto por defecto */
+        }
+
+        .product-list.active {
+            display: block; /* Mostrar cuando está activo */
+        }
+    </style>
 </head>
 <body class="main-layout position_head">
     <header>
@@ -115,27 +141,29 @@ $conn->close();
 <section class="product-section">
    <div class="container">
        <?php foreach ($productos_por_categoria as $categoria => $productos): ?>
-           <h2><?php echo htmlspecialchars($categoria); ?></h2>
-           <div class="row">
-               <?php foreach ($productos as $producto): ?>
-                   <div class="col-md-4">
-                       <div class="product-item">
-                           <img src="images/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
-                           <center><h4><?php echo htmlspecialchars($producto['Producto']); ?></h4></center>
-                           <p><?php echo htmlspecialchars($producto['Descripcion']); ?></p>
-                           <p>
-                               <?php
-                               if ($producto['Precio'] == 0) {
-                                   echo "Gratis";
-                               } else {
-                                   echo "€" . number_format($producto['Precio'], 2, ',', '.');
-                               }
-                               ?>
-                           </p>
-                           <button class="btn btn-primary">Añadir al Carrito</button>
+           <button class="category-btn"><?php echo htmlspecialchars($categoria); ?></button>
+           <div class="product-list">
+               <div class="row">
+                   <?php foreach ($productos as $producto): ?>
+                       <div class="col-md-4">
+                           <div class="product-item">
+                               <img src="images/shop/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
+                               <center><h4><?php echo htmlspecialchars($producto['Producto']); ?></h4></center>
+                               <p><?php echo htmlspecialchars($producto['Descripcion']); ?></p>
+                               <p>
+                                   <?php
+                                   if ($producto['Precio'] == 0) {
+                                       echo "Gratis";
+                                   } else {
+                                       echo "€" . number_format($producto['Precio'], 2, ',', '.');
+                                   }
+                                   ?>
+                               </p>
+                               <button class="btn btn-primary">Añadir al Carrito</button>
+                           </div>
                        </div>
-                   </div>
-               <?php endforeach; ?>
+                   <?php endforeach; ?>
+               </div>
            </div>
        <?php endforeach; ?>
    </div>
@@ -170,5 +198,17 @@ $conn->close();
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/custom.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var categoryButtons = document.querySelectorAll(".category-btn");
+
+            categoryButtons.forEach(function(button) {
+                button.addEventListener("click", function() {
+                    var productList = this.nextElementSibling;
+                    productList.classList.toggle("active");
+                });
+            });
+        });
+    </script>
 </body>
 </html>

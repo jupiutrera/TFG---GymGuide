@@ -41,7 +41,7 @@ session_start();
             z-index: 99; /* Asegúrate de que esté por encima de otros elementos */
             border: none; /* Sin borde */
             outline: none; /* Sin outline */
-            background-color: #007bff; /* Color de fondo azul */
+            background-color: #03cafc; /* Color de fondo azul */
             color: white; /* Color de texto blanco */
             cursor: pointer; /* Cursor de mano */
             width: 50px; /* Ancho */
@@ -55,6 +55,10 @@ session_start();
         #topBtn:hover {
             background-color: black; /* Color de fondo negro al pasar el cursor */
             color: white; /* Color de texto blanco */
+        }
+        section {
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
     </style>
 </head>
