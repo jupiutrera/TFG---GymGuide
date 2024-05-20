@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Configuración de la base de datos
 $servername = "db5015817129.hosting-data.io";
 $username = "dbu3154185";
