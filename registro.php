@@ -72,11 +72,11 @@
                                         <a class="nav-link" href="about.html">Sobre nosotros</a>
                                     </li>
                                     <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="shop.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Tienda
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="shop.html">Productos</a>
+                                            <a class="dropdown-item" href="shop.php">Productos</a>
                                             <a class="dropdown-item" href="cart.html">Carrito</a>
                                         </div>
                                     </li>
