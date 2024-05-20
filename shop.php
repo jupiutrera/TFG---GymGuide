@@ -91,7 +91,7 @@ $conn->close();
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="index.html">Home</a>
+                                        <a class="nav-link" href="http://gymguide.es">Home</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="about.html">Sobre nosotros</a>
