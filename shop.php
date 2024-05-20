@@ -94,7 +94,7 @@ $conn->close();
                                         <a class="nav-link" href="http://gymguide.es">Home</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="about.html">Sobre nosotros</a>
+                                        <a class="nav-link" href="about.php">Sobre nosotros</a>
                                     </li>
                                     <li class="nav-item dropdown active">
                                         <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -102,11 +102,11 @@ $conn->close();
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item active" href="shop.php">Productos</a>
-                                            <a class="dropdown-item" href="cart.html">Carrito</a>
+                                            <a class="dropdown-item" href="cart.php">Carrito</a>
                                         </div>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="contact.html">Contacto</a>
+                                        <a class="nav-link" href="contact.php">Contacto</a>
                                     </li>
                                     <li class="nav-item d_none login_btn">
                                        <a class="nav-link" href="login.php">Iniciar sesión</a>
