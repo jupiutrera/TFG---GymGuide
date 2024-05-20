@@ -84,7 +84,7 @@
                                         <a class="nav-link" href="contact.html">Contacto</a>
                                     </li>
                                     <li class="nav-item d_none login_btn">
-                                        <a class="nav-link" href="login.html">Iniciar sesión</a>
+                                        <a class="nav-link" href="login.php">Iniciar sesión</a>
                                     </li>
                                     <li class="nav-item d_none active">
                                         <a class="nav-link" href="registro.php">Registro</a>
