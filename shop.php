@@ -159,7 +159,15 @@ $conn->close();
                                    }
                                    ?>
                                </p>
-                               <button class="btn btn-primary">Añadir al Carrito</button>
+                           	   <?php if (isset($_SESSION['user_id'])): ?>
+                               <li class="nav-item">
+                               		<button class="btn btn-primary">Añadir al Carrito</button>
+                               </li>
+                               <?php else: ?>
+							   		<form action="login.php">
+                                        <input class="btn btn-primary" type="submit" value="Añadir al Carrito" />
+									</form>
+                               <?php endif; ?>
                            </div>
                        </div>
                    <?php endforeach; ?>
