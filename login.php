@@ -1,6 +1,70 @@
+<?php
+// Habilitar la visualización de errores
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+session_start();
+
+// Inicializar variables para almacenar mensajes de error
+$username_error = $password_error = $general_error = "";
+
+// Inicializar variables para mantener los valores ingresados
+$username = "";
+
+// Configuración de la base de datos
+$servername = "db5015817129.hosting-data.io";
+$username_db = "dbu3154185";
+$password_db = "A1234567.tfg";  // Reemplaza con tu contraseña real
+$dbname = "dbs12897556";
+
+// Crear conexión
+$conn = new mysqli($servername, $username_db, $password_db, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    $general_error = "Connection failed: " . $conn->connect_error;
+} else {
+    // Verificar si el formulario fue enviado
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Obtener los datos del formulario
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        // Verificar que el nombre de usuario existe en la tabla `gymguide_usuarios`
+        $sql_check_user = "SELECT ID, Passwd FROM gymguide_usuarios WHERE Nom_usu = ?";
+        $stmt_check_user = $conn->prepare($sql_check_user);
+        $stmt_check_user->bind_param("s", $username);
+        $stmt_check_user->execute();
+        $stmt_check_user->bind_result($user_id, $hashed_password);
+        $stmt_check_user->fetch();
+        $stmt_check_user->close();
+
+        if ($hashed_password) {
+            // Verificar la contraseña
+            if (password_verify($password, $hashed_password)) {
+                // Iniciar sesión y almacenar información del usuario
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['username'] = $username;
+
+                // Redirigir al usuario a la página principal
+                header("Location: index.php");
+                exit();
+            } else {
+                $password_error = "Contraseña incorrecta.";
+            }
+        } else {
+            $username_error = "El nombre de usuario no existe.";
+        }
+    }
+
+    // Cerrar la conexión
+    $conn->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,7 +103,6 @@
         }
     </style>
 </head>
-
 <body class="main-layout">
     <header>
         <!-- header inner -->
@@ -50,7 +113,7 @@
                         <div class="full">
                             <div class="center-desk">
                                 <div class="logo">
-                                    <a href="index.html" class="brand-logo"><img src="images/logo.png" alt="#" />
+                                    <a href="index.php" class="brand-logo"><img src="images/logo.png" alt="#" />
                                         <p>GymGuide</p>
                                     </a>
                                 </div>
@@ -67,10 +130,10 @@
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="http://gymguide.es">Home</a>
+                                        <a class="nav-link" href="index.php">Home</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="about.html">Sobre nosotros</a>
+                                        <a class="nav-link" href="about.php">Sobre nosotros</a>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,18 +141,24 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="shop.php">Productos</a>
-                                            <a class="dropdown-item" href="cart.html">Carrito</a>
+                                            <a class="dropdown-item" href="cart.php">Carrito</a>
                                         </div>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="contact.html">Contacto</a>
+                                        <a class="nav-link" href="contact.php">Contacto</a>
                                     </li>
-                                    <li class="nav-item d_none login_btn">
-                                        <a class="nav-link" href="login.php">Iniciar sesión</a>
-                                    </li>
-                                    <li class="nav-item d_none">
-                                        <a class="nav-link" href="registro.php">Registro</a>
-                                    </li>
+                                    <?php if (isset($_SESSION['user_id'])): ?>
+                                        <li class="nav-item d_none">
+                                            <a class="nav-link" href="micuenta.php">Mi Cuenta</a>
+                                        </li>
+                                    <?php else: ?>
+                                        <li class="nav-item d_none login_btn">
+                                            <a class="nav-link" href="login.php">Iniciar sesión</a>
+                                        </li>
+                                        <li class="nav-item d_none">
+                                            <a class="nav-link" href="registro.php">Registro</a>
+                                        </li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </nav>
@@ -98,65 +167,6 @@
             </div>
         </div>
     </header>
-
-    <?php
-    // Habilitar la visualización de errores
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-
-    // Inicializar variables para almacenar mensajes de error
-    $username_error = $password_error = $general_error = "";
-
-    // Inicializar variables para mantener los valores ingresados
-    $username = "";
-
-    // Configuración de la base de datos
-    $servername = "db5015817129.hosting-data.io";
-    $username_db = "dbu3154185";
-    $password_db = "A1234567.tfg";
-    $dbname = "dbs12897556";
-
-    // Crear conexión
-    $conn = new mysqli($servername, $username_db, $password_db, $dbname);
-
-    // Verificar conexión
-    if ($conn->connect_error) {
-        $general_error = "Connection failed: " . $conn->connect_error;
-    } else {
-        // Verificar si el formulario fue enviado
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Obtener los datos del formulario
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-
-            // Verificar que el nombre de usuario existe en la tabla `gymguide_usuarios`
-            $sql_check_user = "SELECT Passwd FROM gymguide_usuarios WHERE Nom_usu = ?";
-            $stmt_check_user = $conn->prepare($sql_check_user);
-            $stmt_check_user->bind_param("s", $username);
-            $stmt_check_user->execute();
-            $stmt_check_user->bind_result($hashed_password);
-            $stmt_check_user->fetch();
-            $stmt_check_user->close();
-
-            if ($hashed_password) {
-                // Verificar la contraseña
-                if (password_verify($password, $hashed_password)) {
-                    // Redirigir al usuario a la página de inicio
-                    header("Location: gymguide.es");
-                    exit();
-                } else {
-                    $password_error = "Contraseña incorrecta.";
-                }
-            } else {
-                $username_error = "El nombre de usuario no existe.";
-            }
-        }
-
-        // Cerrar la conexión
-        $conn->close();
-    }
-    ?>
 
     <section class="login-section">
         <div class="container">
@@ -196,7 +206,7 @@
               <div class="container">
                  <div class="row">
                     <div class="col-md-12">
-                       <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>                     </div>
+                       <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>
                  </div>
               </div>
            </div>
@@ -206,5 +216,4 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
