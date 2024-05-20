@@ -2,7 +2,7 @@
 // Configuración de la base de datos
 $servername = "db5015817129.hosting-data.io";
 $username = "dbu3154185";
-$password = "tucontraseña"; // Reemplaza con tu contraseña real
+$password = "A1234567.tfg"; // Reemplaza con tu contraseña real
 $dbname = "dbs12897556";
 
 // Crear conexión
@@ -134,7 +134,15 @@ $conn->close();
                            <img src="images/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
                            <center><h4><?php echo htmlspecialchars($producto['Producto']); ?></h4></center>
                            <p><?php echo htmlspecialchars($producto['Descripcion']); ?></p>
-                           <p>$<?php echo htmlspecialchars($producto['Precio']); ?></p>
+                           <p>
+                               <?php
+                               if ($producto['Precio'] == 0) {
+                                   echo "Gratis";
+                               } else {
+                                   echo "€" . number_format($producto['Precio'], 2, ',', '.');
+                               }
+                               ?>
+                           </p>
                            <button class="btn btn-primary">Añadir al Carrito</button>
                        </div>
                    </div>
