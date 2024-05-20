@@ -2,7 +2,7 @@
 session_start();
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 // Configuración de la base de datos
 $servername = "db5015817129.hosting-data.io";
 $username = "dbu3154185";
-$password = "A1234567.tfg";  // Reemplaza con tu contraseña real
+$password = "tucontraseña";  // Reemplaza con tu contraseña real
 $dbname = "dbs12897556";
 
 // Crear conexión
@@ -22,10 +22,10 @@ if ($conn->connect_error) {
 }
 
 // Obtener los datos del usuario
-$user_id = $_SESSION['user_id'];
-$sql = "SELECT Nom_usu, Correo FROM gymguide_usuarios WHERE ID = ?";
+$username = $_SESSION['username'];
+$sql = "SELECT Nom_usu, Correo FROM gymguide_usuarios WHERE Nom_usu = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("s", $username);
 $stmt->execute();
 $stmt->bind_result($username, $email);
 $stmt->fetch();
@@ -94,6 +94,9 @@ $conn->close();
                                     <li class="nav-item">
                                         <a class="nav-link" href="micuenta.php">Mi Cuenta</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="logout.php">Cerrar sesión</a>
+                                    </li>
                                 </ul>
                             </div>
                         </nav>
@@ -108,6 +111,7 @@ $conn->close();
             <h2>Mi Cuenta</h2>
             <p><strong>Nombre de usuario:</strong> <?php echo htmlspecialchars($username); ?></p>
             <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
+            <a href="logout.php" class="btn btn-danger">Cerrar sesión</a>
         </div>
     </section>
 
