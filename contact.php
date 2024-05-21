@@ -8,7 +8,7 @@ session_start();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GymGuide - Inicio</title>
+    <title>GymGuide - Contacto</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -16,6 +16,13 @@ session_start();
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <style>
+        /* Estilos para asegurar que el mapa tenga un tamaño adecuado */
+        #map {
+            height: 400px; /* Ajustar el tamaño según tus necesidades */
+            width: 100%;
+        }
+    </style>
 </head>
 <body class="main-layout position_head">
     <header>
@@ -80,98 +87,92 @@ session_start();
             </div>
         </div>
     </header>
-      <!-- end header inner -->
-      <!-- end header -->
-      <!-- contact section -->
-      <div id="contact" class="contact">
-         <div class="container">
+    <!-- contact section -->
+    <div id="contact" class="contact">
+        <div class="container">
             <div class="row">
-               <div class="col-md-6">
-                  <form id="request" class="main_form">
-                     <div class="row">
-                        <div class="col-md-12 ">
-                           <h3>Contacta con nosotros</h3>
+                <div class="col-md-6">
+                    <form id="request" class="main_form">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Contacta con nosotros</h3>
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactus" placeholder="Nombre" type="text" name="Name"> 
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactus" placeholder="Número de teléfono" type="text" name="Phone Number"> 
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactus" placeholder="Email" type="text" name="Email">                          
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactusmess" placeholder="Mensaje" type="text" name="Message">
+                            </div>
+                            <div class="col-md-12">
+                                <button class="send_btn">Enviar</button>
+                            </div>
                         </div>
-                        <div class="col-md-12 ">
-                           <input class="contactus" placeholder="Nombre" type="type" name="Name"> 
-                        </div>
-                        <div class="col-md-12">
-                           <input class="contactus" placeholder="Número de teléfono" type="type" name="Phone Number"> 
-                        </div>
-                        <div class="col-md-12">
-                           <input class="contactus" placeholder="Email" type="type" name="Email">                          
-                        </div>
-                        <div class="col-md-12">
-                           <input class="contactusmess" placeholder="Mensaje" type="type" Message="Name">
-                        </div>
-                        <div class="col-md-12">
-                           <button class="send_btn">Enviar</button>
-                        </div>
-                     </div>
-                  </form>
-               </div>
+                    </form>
+                </div>
             </div>
-         </div>
-         <div class="container-fluid">
+        </div>
+        <div class="container-fluid">
             <div class="map_section">
-               <div id="map">
-               </div>
+                <div id="map"></div>
             </div>
-         </div>
-      </div>
-      </div>
-      <!-- end contact section -->
-      <!--  footer -->
-      <footer>
-         <div class="footer">
+        </div>
+    </div>
+    <!-- end contact section -->
+    <!-- footer -->
+    <footer>
+        <div class="footer">
             <div class="container">
-               <div class="row">
-                  <div class="col-md-8 offset-md-2">
-                     <ul class="location_icon">
-                        <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                        <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
-                     </ul>
-                  </div>
-               </div>
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <ul class="location_icon">
+                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="copyright">
-               <div class="container">
-                  <div class="row">
-                     <div class="col-md-12">
-                        <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>                     </div>
-                  </div>
-               </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </footer>
-      <!-- end footer -->
-      <!-- Javascript files-->
-      <script src="js/jquery.min.js"></script>
-      <script src="js/popper.min.js"></script>
-      <script src="js/bootstrap.bundle.min.js"></script>
-      <script src="js/jquery-3.0.0.min.js"></script>
-      <!-- sidebar -->
-      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
-      <script>
-         // This example adds a marker to indicate the position of Bondi Beach in Sydney,
-         // Australia.
-         function initMap() {
-           var map = new google.maps.Map(document.getElementById('map'), {
-             zoom: 11,
-             center: {lat: 40.645037, lng: -73.880224},
-             });
-         
-         var image = 'images/maps-and-flags.png';
-         var beachMarker = new google.maps.Marker({
-             position: {lat: 40.645037, lng: -73.880224},
-             map: map,
-             icon: image
-           });
-         }
-      </script>
-      <!-- google map js -->
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8eaHt9Dh5H57Zh0xVTqxVdBFCvFMqFjQ&callback=initMap"></script>
-      <!-- end google map js --> 
-   </body>
+        </div>
+    </footer>
+    <!-- Javascript files-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <!-- sidebar -->
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 11,
+                center: {lat: 40.645037, lng: -73.880224},
+            });
+
+            var image = 'images/maps-and-flags.png';
+            var beachMarker = new google.maps.Marker({
+                position: {lat: 40.645037, lng: -73.880224},
+                map: map,
+                icon: image
+            });
+        }
+    </script>
+    <!-- google map js -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <!-- end google map js --> 
+</body>
 </html>

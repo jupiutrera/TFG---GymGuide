@@ -23,7 +23,7 @@ $productos_por_categoria = [];
 
 if ($result->num_rows > 0) {
     // Agrupar productos por categoría
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         $productos_por_categoria[$row["Categoria"]][] = $row;
     }
 } else {
@@ -50,21 +50,24 @@ $conn->close();
     <style>
         .category-btn {
             cursor: pointer;
-            background-color: #03cafc;
+            background: linear-gradient(45deg, #03cafc, #007bff);
             color: white;
-            padding: 10px;
+            padding: 10px 20px;
             border: none;
             margin-bottom: 10px;
             display: inline-block;
             width: 100%;
             text-align: left;
             font-size: 18px;
-            transition: background-color 0.3s;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
         .category-btn:hover {
-            background-color: black;
-            color: white;
+            background: linear-gradient(45deg, #007bff, #03cafc);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
         .product-list {
@@ -120,6 +123,9 @@ $conn->close();
         .product-item .btn:hover {
             background-color: black;
         }
+      	.product-section {
+      		margin-top: 30px;
+      	}
     </style>
 </head>
 <body class="main-layout position_head">
@@ -208,7 +214,10 @@ $conn->close();
                                         ?>
                                     </p>
                                     <?php if (isset($_SESSION['user_id'])): ?>
-                                        <button class="btn btn-primary">Añadir al Carrito</button>
+                                        <form action="add_to_cart.php" method="POST">
+                                            <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($producto['ID_producto']); ?>">
+                                            <button type="submit" class="btn btn-primary">Añadir al Carrito</button>
+                                        </form>
                                     <?php else: ?>
                                         <form action="login.php">
                                             <input class="btn btn-primary" type="submit" value="Añadir al Carrito" />

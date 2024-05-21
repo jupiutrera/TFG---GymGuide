@@ -8,7 +8,7 @@ session_start();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GymGuide - Inicio</title>
+    <title>GymGuide - Carrito</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -16,12 +16,41 @@ session_start();
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-	<style>
-      .product-section{
-      	margin-top: 100px;
-        margin-bottom: 100px;
-      }
-  	</style>
+    <style>
+        .product-section {
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+        .table th, .table td {
+            padding: 1.5rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .table tbody + tbody {
+            border-top: 2px solid #dee2e6;
+        }
+        .table .table {
+            background-color: #fff;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    </style>
 </head>
 <body class="main-layout position_head">
     <header>
@@ -86,44 +115,100 @@ session_start();
             </div>
         </div>
     </header>
-	<!-- Product Section -->
-<section class="product-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <p>Su carrito está vacío</p>
+    <!-- Product Section -->
+    <section class="product-section">
+        <div class="container">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <?php
+                // Configuración de la base de datos
+                $servername = "db5015817129.hosting-data.io";
+                $username = "dbu3154185";
+                $password = "A1234567.tfg"; // Reemplaza con tu contraseña real
+                $dbname = "dbs12897556";
+
+                // Crear conexión
+                $conn = new mysqli($servername, $username, $password, $dbname);
+
+                // Verificar conexión
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                $user_id = $_SESSION['user_id'];
+                $sql = "SELECT p.Producto, p.Precio, c.cantidad, (p.Precio * c.cantidad) AS total, c.producto_id
+                        FROM gymguide_carrito c
+                        JOIN gymguide_tienda p ON c.producto_id = p.ID_producto
+                        WHERE c.user_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0): ?>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['Producto']); ?></td>
+                                    <td>€<?php echo number_format($row['Precio'], 2, ',', '.'); ?></td>
+                                    <td><?php echo htmlspecialchars($row['cantidad']); ?></td>
+                                    <td>€<?php echo number_format($row['total'], 2, ',', '.'); ?></td>
+                                    <td>
+                                        <form action="remove_from_cart.php" method="POST">
+                                            <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($row['producto_id']); ?>">
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
                 <?php else: ?>
-                    <p>No puede acceder al carrito sin iniciar sesión</p>
-                    <a class="btn btn-primary" href="login.php">Iniciar sesión</a>
-                <?php endif; ?>
-            </div>
+                    <p>Su carrito está vacío</p>
+                <?php endif;
+
+                $stmt->close();
+                $conn->close();
+                ?>
+            <?php else: ?>
+                <p>No puede acceder al carrito sin iniciar sesión</p>
+                <a class="btn btn-primary" href="login.php">Iniciar sesión</a>
+            <?php endif; ?>
         </div>
-    </div>
-</section>
+    </section>
     <!-- Footer -->
     <footer>
         <div class="footer">
-           <div class="container">
-              <div class="row">
-                 <div class="col-md-8 offset-md-2">
-                    <ul class="location_icon">
-                       <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                       <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
-                    </ul>
-                 </div>
-              </div>
-           </div>
-           <div class="copyright">
-              <div class="container">
-                 <div class="row">
-                    <div class="col-md-12">
-                       <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>                     </div>
-                 </div>
-              </div>
-           </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <ul class="location_icon">
+                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-     </footer>
+    </footer>
     <!-- Javascript files-->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>

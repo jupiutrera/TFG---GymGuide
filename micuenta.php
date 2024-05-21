@@ -47,6 +47,32 @@ $conn->close();
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <style>
+        .account-section {
+            padding: 50px 0;
+            text-align: center;
+        }
+        .account-section h2 {
+            margin-bottom: 30px;
+        }
+        .account-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            text-align: left;
+            width: 100%;
+            max-width: 400px;
+        }
+        .account-details p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .account-details a.btn {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body class="main-layout position_head">
     <header>
@@ -94,9 +120,6 @@ $conn->close();
                                     <li class="nav-item">
                                         <a class="nav-link" href="micuenta.php">Mi Cuenta</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="logout.php">Cerrar sesión</a>
-                                    </li>
                                 </ul>
                             </div>
                         </nav>
@@ -109,9 +132,11 @@ $conn->close();
     <section class="account-section">
         <div class="container">
             <h2>Mi Cuenta</h2>
-            <p><strong>Nombre de usuario:</strong> <?php echo htmlspecialchars($username); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
-            <a href="logout.php" class="btn btn-danger">Cerrar sesión</a>
+            <div class="account-details">
+                <p><strong>Nombre de usuario:</strong> <?php echo htmlspecialchars($username); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
+                <a href="logout.php" class="btn btn-danger">Cerrar sesión</a>
+            </div>
         </div>
     </section>
 
