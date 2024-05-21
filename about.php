@@ -94,7 +94,10 @@ session_start();
                <div class="col-md-7">
                   <div class="titlepage">
                      <h2>Sobre nosotros</h2>
-                     <p>Bienvenido a GymGuide, tu destino integral para todo lo relacionado con el fitness y el bienestar. Somos una tienda y un blog dedicados a proporcionar los mejores elementos de fitness, rutinas de entrenamiento y planes de dieta para ayudarte a alcanzar tus objetivos de salud y condición física.</p>
+                     <p>
+                        Bienvenido a GymGuide, tu destino integral para todo lo relacionado con el fitness y el bienestar. Somos una tienda y un blog dedicados a proporcionar los mejores elementos de fitness, rutinas de entrenamiento y planes de dieta para ayudarte a alcanzar tus objetivos de salud y condición física.
+                        <br/><span style="color: red; weight: bold;">Aviso legal: </span>GymGuide es un proyecto de fin de grado. Las ventas de productos, rutinas y/o dietas presentadas en esta plataforma no son reales y se utilizan únicamente con fines académicos y demostrativos.
+                    </p>
                   </div>
                   <a class="read_more" href="index.php">Volver a Inicio</a>
                </div>
@@ -119,7 +122,10 @@ session_start();
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>                     </div>
+                        <p>
+                            © 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa
+                        </p>                     
+                    </div>
                   </div>
                </div>
             </div>
