@@ -218,6 +218,8 @@ session_start();
                             En GYMGUIDE, nos enorgullece ofrecer una experiencia única que se distingue por: <br> <br>
                             <b>Entrenadores altamente calificados y dedicados:</b> Nuestro equipo de entrenadores está formado por profesionales apasionados y altamente capacitados que están comprometidos con tu éxito. Ellos trabajarán contigo para desarrollar un plan de entrenamiento personalizado que se adapte a tus necesidades, habilidades y objetivos específicos.
                             <br><br><b>Suplementación de calidad:</b> Nos asociamos con las marcas líderes en el mercado para ofrecerte una amplia gama de suplementos de alta calidad que complementarán tu dieta y maximizarán tus resultados.
+                            <br><br><span style="color: red; weight: bold;">Aviso legal: </span>GymGuide es un proyecto de fin de grado. Las ventas de productos, rutinas y/o dietas presentadas en esta plataforma no son reales y se utilizan únicamente con fines académicos y demostrativos.
+                    </p>
                         </div>
                         <a class="read_more" id="read-more">Leer más</a>
                     </div>
