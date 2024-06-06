@@ -105,7 +105,6 @@ if ($conn->connect_error) {
 </head>
 <body class="main-layout">
     <header>
-        <!-- header inner -->
         <div class="header">
             <div class="container-fluid">
                 <div class="row">
@@ -132,7 +131,7 @@ if ($conn->connect_error) {
                                     <li class="nav-item">
                                         <a class="nav-link" href="index.php">Inicio</a>
                                     </li>
-                                  <li class="nav-item dropdown">
+                                    <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Funcionalidades Fitness
                                         </a>
@@ -159,10 +158,10 @@ if ($conn->connect_error) {
                                             <a class="nav-link" href="micuenta.php">Mi Cuenta</a>
                                         </li>
                                     <?php else: ?>
-                                        <li class="nav-item d_none login_btn">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="login.php">Iniciar sesión</a>
                                         </li>
-                                        <li class="nav-item d_none">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="registro.php">Registro</a>
                                         </li>
                                     <?php endif; ?>
