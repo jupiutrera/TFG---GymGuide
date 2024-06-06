@@ -57,14 +57,14 @@ $conn->close();
             background: #fff;
         }
         .product-detail h1 {
-            font-size: 32px;
+            font-size: 28px;
             margin-bottom: 20px;
         }
         .product-detail p {
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 20px;
         }
-        .btn-nav {
+        .btn-nav, .btn-shop {
             background-color: #03cafc;
             border: none;
             color: white;
@@ -73,7 +73,7 @@ $conn->close();
             border-radius: 5px;
             transition: background-color 0.3s;
         }
-        .btn-nav:hover {
+        .btn-nav:hover, .btn-shop:hover {
             background-color: #028aa8;
         }
         .btn-block {
@@ -81,17 +81,35 @@ $conn->close();
             width: 100%;
             text-align: center;
         }
+        .d-flex {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
         .btn-shop {
             background-color: #007bff;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
         }
         .btn-shop:hover {
             background-color: #0056b3;
+        }
+        @media (max-width: 768px) {
+            .product-detail-section {
+                padding: 30px 0;
+            }
+            .product-detail h1 {
+                font-size: 24px;
+            }
+            .product-detail p {
+                font-size: 14px;
+            }
+            .d-flex {
+                flex-direction: column;
+                align-items: center;
+            }
+            .d-flex a {
+                margin-bottom: 10px;
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -196,7 +214,7 @@ $conn->close();
                                 <input class="btn btn-primary btn-block" type="submit" value="Añadir al Carrito" />
                             </form>
                         <?php endif; ?>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex">
                             <?php if ($product_id > 1): ?>
                                 <a href="product.php?id=<?php echo $product_id - 1; ?>" class="btn btn-nav">Anterior</a>
                             <?php endif; ?>
