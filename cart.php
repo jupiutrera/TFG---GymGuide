@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'config.php'; // Incluye el archivo de configuración
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +50,31 @@ session_start();
         .btn-danger:hover {
             background-color: #c82333;
             border-color: #bd2130;
+        }
+        @media (max-width: 768px) {
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: block;
+                margin-bottom: 0.625rem;
+            }
+            .table td {
+                display: block;
+                text-align: right;
+                border-top: none;
+                position: relative;
+                padding-left: 50%;
+            }
+            .table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+            }
         }
     </style>
 </head>
@@ -127,20 +153,6 @@ session_start();
         <div class="container">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <?php
-                // Configuración de la base de datos
-                $servername = "db5015817129.hosting-data.io";
-                $username = "dbu3154185";
-                $password = "A1234567.tfg"; // Reemplaza con tu contraseña real
-                $dbname = "dbs12897556";
-
-                // Crear conexión
-                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                // Verificar conexión
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
-
                 $user_id = $_SESSION['user_id'];
                 $sql = "SELECT p.Producto, p.Precio, c.cantidad, (p.Precio * c.cantidad) AS total, c.producto_id
                         FROM gymguide_carrito c
@@ -156,7 +168,6 @@ session_start();
                         <thead>
                             <tr>
                                 <th>Producto</th>
-                                <th>Precio</th>
                                 <th>Cantidad</th>
                                 <th>Total</th>
                                 <th>Acciones</th>
@@ -165,11 +176,10 @@ session_start();
                         <tbody>
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($row['Producto']); ?></td>
-                                    <td>€<?php echo number_format($row['Precio'], 2, ',', '.'); ?></td>
-                                    <td><?php echo htmlspecialchars($row['cantidad']); ?></td>
-                                    <td>€<?php echo number_format($row['total'], 2, ',', '.'); ?></td>
-                                    <td>
+                                    <td data-label="Producto"><?php echo htmlspecialchars($row['Producto']); ?></td>
+                                    <td data-label="Cantidad"><?php echo htmlspecialchars($row['cantidad']); ?></td>
+                                    <td data-label="Total">€<?php echo number_format($row['total'], 2, ',', '.'); ?></td>
+                                    <td data-label="Acciones">
                                         <form action="remove_from_cart.php" method="POST">
                                             <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($row['producto_id']); ?>">
                                             <button type="submit" class="btn btn-danger">Eliminar</button>
