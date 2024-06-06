@@ -172,6 +172,9 @@ session_start();
                             <?php endwhile; ?>
                         </tbody>
                     </table>
+                    <div class="text-right mt-4">
+                        <a href="buy.php" class="btn btn-success">Confirmar Compra</a>
+                    </div>
                 <?php else: ?>
                     <p>Su carrito está vacío</p>
                 <?php endif;

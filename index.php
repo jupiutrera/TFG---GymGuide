@@ -79,6 +79,45 @@ session_start();
         .header .navigation {
             margin-bottom: 0px; /* Asegúrate de que no haya margen inferior */
         }
+      	#cookieConsent {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    z-index: 1000;
+    display: none;
+}
+
+.cookieConsentContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.cookieConsentContainer p {
+    margin: 0;
+    padding: 0 10px;
+}
+
+.cookieButton {
+    background-color: #03cafc;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.cookieButton:hover {
+    background-color: #028aa8;
+}
+
     </style>
 </head>
 <body class="main-layout position_head">
@@ -107,10 +146,17 @@ session_start();
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="index.php">Home</a>
+                                        <a class="nav-link" href="index.php">Inicio</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="about.php">Sobre nosotros</a>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Funcionalidades Fitness
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="calorie-calculator.php">Calculadora de calorias</a>
+                                            <a class="dropdown-item" href="1RM-calculator.php">Calculadora de 1RM</a>
+                                            <a class="dropdown-item" href="bloquesdefuerza.php">Programación en Bloques de fuerza</a>
+                                        </div>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -129,10 +175,10 @@ session_start();
                                             <a class="nav-link" href="micuenta.php">Mi Cuenta</a>
                                         </li>
                                     <?php else: ?>
-                                        <li class="nav-item d_none login_btn">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="login.php">Iniciar sesión</a>
                                         </li>
-                                        <li class="nav-item d_none">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="registro.php">Registro</a>
                                         </li>
                                     <?php endif; ?>
@@ -218,8 +264,6 @@ session_start();
                             En GYMGUIDE, nos enorgullece ofrecer una experiencia única que se distingue por: <br> <br>
                             <b>Entrenadores altamente calificados y dedicados:</b> Nuestro equipo de entrenadores está formado por profesionales apasionados y altamente capacitados que están comprometidos con tu éxito. Ellos trabajarán contigo para desarrollar un plan de entrenamiento personalizado que se adapte a tus necesidades, habilidades y objetivos específicos.
                             <br><br><b>Suplementación de calidad:</b> Nos asociamos con las marcas líderes en el mercado para ofrecerte una amplia gama de suplementos de alta calidad que complementarán tu dieta y maximizarán tus resultados.
-                            <br><br><span style="color: red; weight: bold;">Aviso legal: </span>GymGuide es un proyecto de fin de grado. Las ventas de productos, rutinas y/o dietas presentadas en esta plataforma no son reales y se utilizan únicamente con fines académicos y demostrativos.
-                    </p>
                         </div>
                         <a class="read_more" id="read-more">Leer más</a>
                     </div>
@@ -263,7 +307,7 @@ session_start();
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="clients_box">
-                                                    <figure><img src="images/our.png" alt="#"/></figure>
+                                                    
                                                     <h3>Juan Utrera</h3>
                                                     <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact  a more-or-less normal distribution of letters,</p>
                                                 </div>
@@ -278,7 +322,7 @@ session_start();
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="clients_box">
-                                                    <figure><img src="images/our.png" alt="#"/></figure>
+                                                    
                                                     <h3>David Miñano</h3>
                                                     <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact  a more-or-less normal distribution of letters,</p>
                                                 </div>
@@ -356,5 +400,29 @@ session_start();
             document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE y Opera
         }
     </script>
+  	<!-- Cookie Consent -->
+<div id="cookieConsent">
+    <div class="cookieConsentContainer">
+        <p>Este sitio web utiliza cookies para mejorar su experiencia. Al continuar navegando, acepta nuestro uso de cookies.</p>
+        <button id="acceptCookies" class="cookieButton">Aceptar</button>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const cookieConsent = document.getElementById('cookieConsent');
+    const acceptCookies = document.getElementById('acceptCookies');
+
+    // Show the cookie consent if not accepted before
+    if (!localStorage.getItem('cookiesAccepted')) {
+        cookieConsent.style.display = 'block';
+    }
+
+    // Set cookiesAccepted to true when the button is clicked
+    acceptCookies.addEventListener('click', function () {
+        localStorage.setItem('cookiesAccepted', 'true');
+        cookieConsent.style.display = 'none';
+    });
+});
+</script>
 </body>
 </html>

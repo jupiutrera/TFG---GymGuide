@@ -3,12 +3,12 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GymGuide - Inicio</title>
+    <title>GymGuide - Calculadora de Calorías</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -16,11 +16,20 @@ session_start();
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-  	<style>
-      .error-content {
-      	margin: 50px;
-      }
-  	</style>
+    <style>
+        .calculator-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .calculator-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body class="main-layout position_head">
     <header>
@@ -92,23 +101,77 @@ session_start();
             </div>
         </div>
     </header>
-    <!-- end header inner -->
-    <!-- end header -->
-
-    <section class="error-section">
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-12">
-                    <div class="error-content">
-                        <h1 class="display-1">404</h1>
-                        <p class="lead">Lo sentimos, la página que buscas no se encuentra.</p>
+    <!-- Calculadora de Calorías -->
+    <section class="product-section">
+        <div class="container">
+            <div class="calculator-container">
+                <h2>Calculadora de Calorías</h2>
+                <form action="calorie-calculator.php" method="post">
+                    <div class="form-group">
+                        <label for="weight">Peso (kg):</label>
+                        <input type="number" class="form-control" id="weight" name="weight" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="age">Edad:</label>
+                        <input type="number" class="form-control" id="age" name="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="height">Altura (cm):</label>
+                        <input type="number" class="form-control" id="height" name="height" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="activity">Nivel de actividad física:</label>
+                        <select class="form-control" id="activity" name="activity" required>
+                            <option value="1.2">Sedentario (poco o ningún ejercicio)</option>
+                            <option value="1.375">Ejercicio ligero (1-3 días a la semana)</option>
+                            <option value="1.55">Ejercicio moderado (3-5 días a la semana)</option>
+                            <option value="1.725">Ejercicio fuerte (6-7 días a la semana)</option>
+                            <option value="1.9">Ejercicio muy fuerte (dos veces al día, entrenamientos duros)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal">Objetivo:</label>
+                        <select class="form-control" id="goal" name="goal" required>
+                            <option value="mantener">Mantener el peso</option>
+                            <option value="perdida">Perder peso</option>
+                            <option value="ganancia">Ganar peso</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Calcular</button>
+                </form>
+
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $weight = $_POST['weight'];
+                    $age = $_POST['age'];
+                    $height = $_POST['height'];
+                    $activity = $_POST['activity'];
+                    $goal = $_POST['goal'];
+
+                    // Calcular la TMB (Tasa Metabólica Basal) usando la fórmula de Harris-Benedict
+                    // Asumiendo que es una mujer para la fórmula, puedes ajustar según el sexo del usuario.
+                    $tmb = 655 + (9.6 * $weight) + (1.8 * $height) - (4.7 * $age);
+                    
+                    // Calcular las calorías diarias según el nivel de actividad
+                    $calories = $tmb * $activity;
+                    
+                    // Ajustar las calorías según el objetivo
+                    if ($goal == 'perdida') {
+                        $calories -= 500; // Deficit calórico para perder peso
+                    } elseif ($goal == 'ganancia') {
+                        $calories += 500; // Superávit calórico para ganar peso
+                    }
+
+                    echo "<div class='calculator-container'>
+                            <h2>Resultado</h2>
+                            <p>Para tu objetivo de <strong>" . htmlspecialchars($goal) . "</strong> peso, deberías consumir aproximadamente <strong>" . round($calories) . "</strong> calorías al día.</p>
+                          </div>";
+                }
+                ?>
             </div>
         </div>
     </section>
-
-    <!-- footer -->
+    <!-- Footer -->
     <footer>
         <div class="footer">
             <div class="container">
@@ -132,13 +195,10 @@ session_start();
             </div>
         </div>
     </footer>
-    <!-- end footer -->
     <!-- Javascript files-->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/jquery-3.0.0.min.js"></script>
-    <!-- sidebar -->
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/custom.js"></script>
 </body>

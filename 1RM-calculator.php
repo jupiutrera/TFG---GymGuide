@@ -3,12 +3,12 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GymGuide - Inicio</title>
+    <title>GymGuide - Calculadora de 1RM</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -16,11 +16,20 @@ session_start();
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-  	<style>
-      .error-content {
-      	margin: 50px;
-      }
-  	</style>
+    <style>
+        .calculator-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .calculator-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body class="main-layout position_head">
     <header>
@@ -92,23 +101,41 @@ session_start();
             </div>
         </div>
     </header>
-    <!-- end header inner -->
-    <!-- end header -->
-
-    <section class="error-section">
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-12">
-                    <div class="error-content">
-                        <h1 class="display-1">404</h1>
-                        <p class="lead">Lo sentimos, la página que buscas no se encuentra.</p>
+    <!-- Calculadora de 1RM -->
+    <section class="product-section">
+        <div class="container">
+            <div class="calculator-container">
+                <h2>Calculadora de 1RM</h2>
+                <form action="1RM-calculator.php" method="post">
+                    <div class="form-group">
+                        <label for="weight">Peso levantado (kg):</label>
+                        <input type="number" class="form-control" id="weight" name="weight" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="reps">Número de repeticiones:</label>
+                        <input type="number" class="form-control" id="reps" name="reps" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Calcular</button>
+                </form>
+
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $weight = $_POST['weight'];
+                    $reps = $_POST['reps'];
+
+                    // Calcular 1RM usando la fórmula de Epley
+                    $one_rm = $weight * (1 + $reps / 30);
+
+                    echo "<div class='calculator-container'>
+                            <h2>Resultado</h2>
+                            <p>Tu 1RM estimado es <strong>" . round($one_rm, 2) . " kg</strong>.</p>
+                          </div>";
+                }
+                ?>
             </div>
         </div>
     </section>
-
-    <!-- footer -->
+    <!-- Footer -->
     <footer>
         <div class="footer">
             <div class="container">
@@ -132,13 +159,10 @@ session_start();
             </div>
         </div>
     </footer>
-    <!-- end footer -->
     <!-- Javascript files-->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/jquery-3.0.0.min.js"></script>
-    <!-- sidebar -->
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/custom.js"></script>
 </body>

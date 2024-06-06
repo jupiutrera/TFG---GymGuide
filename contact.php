@@ -50,10 +50,17 @@ session_start();
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="index.php">Home</a>
+                                        <a class="nav-link" href="index.php">Inicio</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="about.php">Sobre nosotros</a>
+                                  <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Funcionalidades Fitness
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="calorie-calculator.php">Calculadora de calorias</a>
+                                            <a class="dropdown-item" href="1RM-calculator.php">Calculadora de 1RM</a>
+                                            <a class="dropdown-item" href="bloquesdefuerza.php">Programación en Bloques de fuerza</a>
+                                        </div>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -117,11 +124,7 @@ session_start();
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
-            <div class="map_section">
-                <div id="map"></div>
-            </div>
-        </div>
+        <img src="images/fondocontacto.jpg" alt="#" />
     </div>
     <!-- end contact section -->
     <!-- footer -->
@@ -156,23 +159,5 @@ session_start();
     <!-- sidebar -->
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/custom.js"></script>
-    <script>
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 11,
-                center: {lat: 40.645037, lng: -73.880224},
-            });
-
-            var image = 'images/maps-and-flags.png';
-            var beachMarker = new google.maps.Marker({
-                position: {lat: 40.645037, lng: -73.880224},
-                map: map,
-                icon: image
-            });
-        }
-    </script>
-    <!-- google map js -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-    <!-- end google map js --> 
 </body>
 </html>
