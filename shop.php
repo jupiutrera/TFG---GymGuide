@@ -219,9 +219,10 @@ $conn->close();
                         <?php foreach ($productos as $producto): ?>
                             <div class="col-md-4 col-sm-6">
                                 <div class="product-item">
-                                    <img src="images/shop/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
-                                    <h4><?php echo htmlspecialchars($producto['Producto']); ?></h4>
-                                    <p><?php echo htmlspecialchars($producto['Descripcion']); ?></p>
+                                    <a href="shop/product.php?id=<?php echo htmlspecialchars($producto['ID_producto']); ?>">
+                                        <img src="images/shop/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
+                                        <h4><?php echo htmlspecialchars($producto['Producto']); ?></h4>
+                                    </a>
                                     <p>
                                         <?php
                                         if ($producto['Precio'] == 0) {
