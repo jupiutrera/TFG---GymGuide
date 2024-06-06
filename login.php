@@ -72,6 +72,11 @@ if ($conn->connect_error) {
     <title>Login - GymGuide</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="images/fevicon.png" type="image/gif" />
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
     <style>
         body, html {
             height: 100%;
@@ -90,16 +95,26 @@ if ($conn->connect_error) {
             display: flex;
             align-items: center; /* Centra verticalmente el contenido de login */
             justify-content: center; /* Centra horizontalmente */
-            padding-top: 100px;
+            padding: 20px;
+            padding-top: 200px; /* Añadir más espacio superior para evitar solapamiento */
         }
         .form-wrapper {
             width: 100%; /* O ajusta según necesidades específicas */
             max-width: 400px; /* Máximo ancho del formulario */
+            background-color: #fff; /* Fondo blanco para el formulario */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera para el formulario */
+            margin: auto;
         }
         .error-message {
             color: red;
             margin-bottom: 15px;
             font-size: 0.875em;
+        }
+        .login-title {
+            text-align: center;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -120,7 +135,7 @@ if ($conn->connect_error) {
                         </div>
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                        <nav class="navigation navbar navbar-expand-md navbar-dark ">
+                        <nav class="navigation navbar navbar-expand-md navbar-dark">
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -177,7 +192,7 @@ if ($conn->connect_error) {
     <section class="login-section">
         <div class="container">
             <div class="form-wrapper">
-                <h3>Login</h3>
+                <h3 class="login-title">Login</h3>
                 <?php if (!empty($general_error)) { echo "<p class='error-message'>$general_error</p>"; } ?>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                     <div class="form-group">
@@ -190,7 +205,7 @@ if ($conn->connect_error) {
                         <input type="password" class="form-control" id="password" name="password" required>
                         <?php if (!empty($password_error)) { echo "<p class='error-message'>$password_error</p>"; } ?>
                     </div>
-                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
                 </form>
             </div>
         </div>
@@ -198,27 +213,28 @@ if ($conn->connect_error) {
 
     <footer>
         <div class="footer">
-           <div class="container">
-              <div class="row">
-                 <div class="col-md-8 offset-md-2">
-                    <ul class="location_icon">
-                       <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                       <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
-                    </ul>
-                 </div>
-              </div>
-           </div>
-           <div class="copyright">
-              <div class="container">
-                 <div class="row">
-                    <div class="col-md-12">
-                       <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>
-                 </div>
-              </div>
-           </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <ul class="location_icon">
+                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>© 2024 Todos los derechos reservados. Diseñado por Juan Utrera Díaz y David Miñano de la Osa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-     </footer>
-     
+    </footer>
+
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
