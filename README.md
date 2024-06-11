@@ -68,4 +68,3 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE
 ## Contacto
 
 Para cualquier pregunta o sugerencia, por favor contacta con nosotros en contacto@gymguide.es.
-"""
