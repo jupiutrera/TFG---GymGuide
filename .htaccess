@@ -1,0 +1,8 @@
+# Asegúrate de que el servidor web use index.php como página de inicio
+DirectoryIndex index.php
+ErrorDocument 404 /404.php
+
+# Opcional: Redirige cualquier solicitud desde www a la raíz sin www
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]

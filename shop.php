@@ -1,18 +1,6 @@
 <?php
 session_start();
-// Configuración de la base de datos
-$servername = "db5015817129.hosting-data.io";
-$username = "dbu3154185";
-$password = "A1234567.tfg"; // Reemplaza con tu contraseña real
-$dbname = "dbs12897556";
-
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar conexión
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'config.php'; // Incluye el archivo de configuración
 
 // Obtener los productos de la base de datos
 $sql = "SELECT Producto, Categoria, Descripcion, Precio, ID_producto FROM gymguide_tienda";
@@ -32,7 +20,6 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,9 +110,33 @@ $conn->close();
         .product-item .btn:hover {
             background-color: black;
         }
-      	.product-section {
-      		margin-top: 30px;
-      	}
+
+        .product-section {
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .category-btn {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+
+            .product-item {
+                padding: 15px;
+            }
+
+            .product-item h4 {
+                font-size: 18px;
+            }
+
+            .product-item p {
+                font-size: 14px;
+            }
+
+            .product-item .btn {
+                padding: 8px 16px;
+            }
+        }
     </style>
 </head>
 <body class="main-layout position_head">
@@ -154,10 +165,16 @@ $conn->close();
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="index.php">Home</a>
+                                        <a class="nav-link" href="index.php">Inicio</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="about.php">Sobre nosotros</a>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Funcionalidades Fitness
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="calorie-calculator.php">Calculadora de calorias</a>
+                                            <a class="dropdown-item" href="1RM-calculator.php">Calculadora de 1RM</a>
+                                        </div>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -176,10 +193,10 @@ $conn->close();
                                             <a class="nav-link" href="micuenta.php">Mi Cuenta</a>
                                         </li>
                                     <?php else: ?>
-                                        <li class="nav-item d_none login_btn">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="login.php">Iniciar sesión</a>
                                         </li>
-                                        <li class="nav-item d_none">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="registro.php">Registro</a>
                                         </li>
                                     <?php endif; ?>
@@ -199,11 +216,12 @@ $conn->close();
                 <div class="product-list">
                     <div class="row">
                         <?php foreach ($productos as $producto): ?>
-                            <div class="col-md-4">
+                            <div class="col-md-4 col-sm-6">
                                 <div class="product-item">
-                                    <img src="images/shop/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
-                                    <h4><?php echo htmlspecialchars($producto['Producto']); ?></h4>
-                                    <p><?php echo htmlspecialchars($producto['Descripcion']); ?></p>
+                                    <a href="shop/product.php?id=<?php echo htmlspecialchars($producto['ID_producto']); ?>">
+                                        <img src="images/shop/<?php echo htmlspecialchars($producto['ID_producto']); ?>.jpg" class="product-img" alt="<?php echo htmlspecialchars($producto['Producto']); ?>">
+                                        <h4><?php echo htmlspecialchars($producto['Producto']); ?></h4>
+                                    </a>
                                     <p>
                                         <?php
                                         if ($producto['Precio'] == 0) {
@@ -238,8 +256,8 @@ $conn->close();
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <ul class="location_icon">
-                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
+                            <li><a href="https://www.google.com/maps?q=C/San+Benito+6" target="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="mailto:contacto@gymguide.es"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> contacto@gymguide.es</li>
                         </ul>
                     </div>
                 </div>

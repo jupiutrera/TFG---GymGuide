@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'config.php'; // Incluye el archivo de configuración
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +51,31 @@ session_start();
             background-color: #c82333;
             border-color: #bd2130;
         }
+        @media (max-width: 768px) {
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: block;
+                margin-bottom: 0.625rem;
+            }
+            .table td {
+                display: block;
+                text-align: right;
+                border-top: none;
+                position: relative;
+                padding-left: 50%;
+            }
+            .table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+            }
+        }
     </style>
 </head>
 <body class="main-layout position_head">
@@ -78,10 +104,16 @@ session_start();
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="index.php">Home</a>
+                                        <a class="nav-link" href="index.php">Inicio</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="about.php">Sobre nosotros</a>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Funcionalidades Fitness
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="calorie-calculator.php">Calculadora de calorias</a>
+                                            <a class="dropdown-item" href="1RM-calculator.php">Calculadora de 1RM</a>
+                                        </div>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -100,10 +132,10 @@ session_start();
                                             <a class="nav-link" href="micuenta.php">Mi Cuenta</a>
                                         </li>
                                     <?php else: ?>
-                                        <li class="nav-item d_none login_btn">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="login.php">Iniciar sesión</a>
                                         </li>
-                                        <li class="nav-item d_none">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="registro.php">Registro</a>
                                         </li>
                                     <?php endif; ?>
@@ -120,20 +152,6 @@ session_start();
         <div class="container">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <?php
-                // Configuración de la base de datos
-                $servername = "db5015817129.hosting-data.io";
-                $username = "dbu3154185";
-                $password = "A1234567.tfg"; // Reemplaza con tu contraseña real
-                $dbname = "dbs12897556";
-
-                // Crear conexión
-                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                // Verificar conexión
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
-
                 $user_id = $_SESSION['user_id'];
                 $sql = "SELECT p.Producto, p.Precio, c.cantidad, (p.Precio * c.cantidad) AS total, c.producto_id
                         FROM gymguide_carrito c
@@ -149,7 +167,6 @@ session_start();
                         <thead>
                             <tr>
                                 <th>Producto</th>
-                                <th>Precio</th>
                                 <th>Cantidad</th>
                                 <th>Total</th>
                                 <th>Acciones</th>
@@ -158,11 +175,10 @@ session_start();
                         <tbody>
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($row['Producto']); ?></td>
-                                    <td>€<?php echo number_format($row['Precio'], 2, ',', '.'); ?></td>
-                                    <td><?php echo htmlspecialchars($row['cantidad']); ?></td>
-                                    <td>€<?php echo number_format($row['total'], 2, ',', '.'); ?></td>
-                                    <td>
+                                    <td data-label="Producto"><?php echo htmlspecialchars($row['Producto']); ?></td>
+                                    <td data-label="Cantidad"><?php echo htmlspecialchars($row['cantidad']); ?></td>
+                                    <td data-label="Total">€<?php echo number_format($row['total'], 2, ',', '.'); ?></td>
+                                    <td data-label="Acciones">
                                         <form action="remove_from_cart.php" method="POST">
                                             <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($row['producto_id']); ?>">
                                             <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -172,6 +188,9 @@ session_start();
                             <?php endwhile; ?>
                         </tbody>
                     </table>
+                    <div class="text-right mt-4">
+                        <a href="buy.php" class="btn btn-success">Confirmar Compra</a>
+                    </div>
                 <?php else: ?>
                     <p>Su carrito está vacío</p>
                 <?php endif;
@@ -192,8 +211,8 @@ session_start();
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <ul class="location_icon">
-                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
+                            <li><a href="https://www.google.com/maps?q=C/San+Benito+6" target="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="mailto:contacto@gymguide.es"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> contacto@gymguide.es</li>
                         </ul>
                     </div>
                 </div>

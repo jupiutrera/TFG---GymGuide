@@ -1,75 +1,92 @@
 <?php
-// Habilitar la visualización de errores
+session_start();
+
+// Configuración de la base de datos
+$servername = "db5015817129.hosting-data.io";
+$username = "dbu3154185";
+$password = "A1234567.tfg"; // Reemplaza con tu contraseña real
+$dbname = "dbs12897556";
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Activar reporte de errores para depuración
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
-
-// Inicializar variables para almacenar mensajes de error
-$username_error = $password_error = $general_error = "";
-
-// Inicializar variables para mantener los valores ingresados
-$username = "";
-
-// Configuración de la base de datos
-$servername = "db5015817129.hosting-data.io";
-$username_db = "dbu3154185";
-$password_db = "A1234567.tfg";  // Reemplaza con tu contraseña real
-$dbname = "dbs12897556";
-
-// Crear conexión
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-
-// Verificar conexión
-if ($conn->connect_error) {
-    $general_error = "Connection failed: " . $conn->connect_error;
-} else {
-    // Verificar si el formulario fue enviado
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Obtener los datos del formulario
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-
-        // Verificar que el nombre de usuario existe en la tabla `gymguide_usuarios`
-        $sql_check_user = "SELECT ID, Passwd FROM gymguide_usuarios WHERE Nom_usu = ?";
-        $stmt_check_user = $conn->prepare($sql_check_user);
-        $stmt_check_user->bind_param("s", $username);
-        $stmt_check_user->execute();
-        $stmt_check_user->bind_result($user_id, $hashed_password);
-        $stmt_check_user->fetch();
-        $stmt_check_user->close();
-
-        if ($hashed_password) {
-            // Verificar la contraseña
-            if (password_verify($password, $hashed_password)) {
-                // Iniciar sesión y almacenar información del usuario
-                $_SESSION['user_id'] = $user_id;
-                $_SESSION['username'] = $username;
-
-                // Redirigir al usuario a la página principal
-                header("Location: index.php");
-                exit();
-            } else {
-                $password_error = "Contraseña incorrecta.";
-            }
-        } else {
-            $username_error = "El nombre de usuario no existe.";
-        }
-    }
-
-    // Cerrar la conexión
-    $conn->close();
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
 }
+
+$user_id = $_SESSION['user_id'];
+
+// Obtener los productos en el carrito del usuario desde la base de datos
+$sql = "SELECT producto_id FROM gymguide_carrito WHERE user_id = ?";
+$stmt = $conn->prepare($sql);
+if (!$stmt) {
+    die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+}
+
+$stmt->bind_param("i", $user_id);
+if (!$stmt->execute()) {
+    die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+}
+
+$result = $stmt->get_result();
+$product_ids = [];
+while ($row = $result->fetch_assoc()) {
+    $product_ids[] = $row['producto_id'];
+}
+$stmt->close();
+
+if (!empty($product_ids)) {
+    $product_ids_str = implode(",", $product_ids);
+
+    // Insertar los detalles de la compra en la tabla de compras
+    $sql = "INSERT INTO gymguide_compras (user_id, product_ids) VALUES (?, ?)";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+    }
+    $stmt->bind_param("is", $user_id, $product_ids_str);
+    if (!$stmt->execute()) {
+        die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+    }
+    $stmt->close();
+
+    // Borrar el carrito del usuario
+    $sql = "DELETE FROM gymguide_carrito WHERE user_id = ?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+    }
+    $stmt->bind_param("i", $user_id);
+    if (!$stmt->execute()) {
+        die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+    }
+    $stmt->close();
+
+    // Limpiar la variable de sesión del carrito
+    unset($_SESSION['cart']);
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - GymGuide</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Compra</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -77,48 +94,8 @@ if ($conn->connect_error) {
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-        }
-        .main-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        header, footer {
-            flex-shrink: 0; /* Evita que header y footer se reduzcan */
-        }
-        .login-section {
-            flex: 1; /* Ocupa el espacio restante */
-            display: flex;
-            align-items: center; /* Centra verticalmente el contenido de login */
-            justify-content: center; /* Centra horizontalmente */
-            padding: 20px;
-            padding-top: 200px; /* Añadir más espacio superior para evitar solapamiento */
-        }
-        .form-wrapper {
-            width: 100%; /* O ajusta según necesidades específicas */
-            max-width: 400px; /* Máximo ancho del formulario */
-            background-color: #fff; /* Fondo blanco para el formulario */
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera para el formulario */
-            margin: auto;
-        }
-        .error-message {
-            color: red;
-            margin-bottom: 15px;
-            font-size: 0.875em;
-        }
-        .login-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
-<body class="main-layout">
+<body class="main-layout position_head">
     <header>
         <div class="header">
             <div class="container-fluid">
@@ -135,7 +112,7 @@ if ($conn->connect_error) {
                         </div>
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                        <nav class="navigation navbar navbar-expand-md navbar-dark">
+                        <nav class="navigation navbar navbar-expand-md navbar-dark ">
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -188,36 +165,28 @@ if ($conn->connect_error) {
         </div>
     </header>
 
-    <section class="login-section">
+    <!-- Confirmación de Compra -->
+    <section class="product-section">
         <div class="container">
-            <div class="form-wrapper">
-                <h3 class="login-title">Login</h3>
-                <?php if (!empty($general_error)) { echo "<p class='error-message'>$general_error</p>"; } ?>
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                    <div class="form-group">
-                        <label for="username">Nombre de usuario:</label>
-                        <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required>
-                        <?php if (!empty($username_error)) { echo "<p class='error-message'>$username_error</p>"; } ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Contraseña:</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                        <?php if (!empty($password_error)) { echo "<p class='error-message'>$password_error</p>"; } ?>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
-                </form>
+            <h2>Confirmación de Compra</h2>
+            <div class="alert alert-success">
+                ¡Gracias por su compra! Su pedido ha sido confirmado.
+            </div>
+            <div class="text-center mt-4">
+                <a href="index.php" class="btn btn-primary">Volver al Inicio</a>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="footer">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <ul class="location_icon">
-                            <li><a href="https://www.google.com/maps?q=C/San+Benito+6" target="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                            <li><a href="mailto:contacto@gymguide.es"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> contacto@gymguide.es</li>
+                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
                         </ul>
                     </div>
                 </div>
@@ -234,7 +203,11 @@ if ($conn->connect_error) {
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/custom.js"></script>
 </body>
 </html>

@@ -1,66 +1,5 @@
 <?php
-// Habilitar la visualización de errores
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
-
-// Inicializar variables para almacenar mensajes de error
-$username_error = $password_error = $general_error = "";
-
-// Inicializar variables para mantener los valores ingresados
-$username = "";
-
-// Configuración de la base de datos
-$servername = "db5015817129.hosting-data.io";
-$username_db = "dbu3154185";
-$password_db = "A1234567.tfg";  // Reemplaza con tu contraseña real
-$dbname = "dbs12897556";
-
-// Crear conexión
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-
-// Verificar conexión
-if ($conn->connect_error) {
-    $general_error = "Connection failed: " . $conn->connect_error;
-} else {
-    // Verificar si el formulario fue enviado
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Obtener los datos del formulario
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-
-        // Verificar que el nombre de usuario existe en la tabla `gymguide_usuarios`
-        $sql_check_user = "SELECT ID, Passwd FROM gymguide_usuarios WHERE Nom_usu = ?";
-        $stmt_check_user = $conn->prepare($sql_check_user);
-        $stmt_check_user->bind_param("s", $username);
-        $stmt_check_user->execute();
-        $stmt_check_user->bind_result($user_id, $hashed_password);
-        $stmt_check_user->fetch();
-        $stmt_check_user->close();
-
-        if ($hashed_password) {
-            // Verificar la contraseña
-            if (password_verify($password, $hashed_password)) {
-                // Iniciar sesión y almacenar información del usuario
-                $_SESSION['user_id'] = $user_id;
-                $_SESSION['username'] = $username;
-
-                // Redirigir al usuario a la página principal
-                header("Location: index.php");
-                exit();
-            } else {
-                $password_error = "Contraseña incorrecta.";
-            }
-        } else {
-            $username_error = "El nombre de usuario no existe.";
-        }
-    }
-
-    // Cerrar la conexión
-    $conn->close();
-}
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +8,7 @@ if ($conn->connect_error) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - GymGuide</title>
+    <title>GymGuide - Calculadora de Calorías</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -78,47 +17,21 @@ if ($conn->connect_error) {
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-        }
-        .main-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        header, footer {
-            flex-shrink: 0; /* Evita que header y footer se reduzcan */
-        }
-        .login-section {
-            flex: 1; /* Ocupa el espacio restante */
-            display: flex;
-            align-items: center; /* Centra verticalmente el contenido de login */
-            justify-content: center; /* Centra horizontalmente */
+        .calculator-container {
+            max-width: 600px;
+            margin: 50px auto;
             padding: 20px;
-            padding-top: 200px; /* Añadir más espacio superior para evitar solapamiento */
-        }
-        .form-wrapper {
-            width: 100%; /* O ajusta según necesidades específicas */
-            max-width: 400px; /* Máximo ancho del formulario */
-            background-color: #fff; /* Fondo blanco para el formulario */
-            padding: 30px;
+            border: 1px solid #e1e1e1;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera para el formulario */
-            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .error-message {
-            color: red;
-            margin-bottom: 15px;
-            font-size: 0.875em;
-        }
-        .login-title {
+        .calculator-container h2 {
             text-align: center;
             margin-bottom: 20px;
         }
     </style>
 </head>
-<body class="main-layout">
+<body class="main-layout position_head">
     <header>
         <div class="header">
             <div class="container-fluid">
@@ -135,7 +48,7 @@ if ($conn->connect_error) {
                         </div>
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                        <nav class="navigation navbar navbar-expand-md navbar-dark">
+                        <nav class="navigation navbar navbar-expand-md navbar-dark ">
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -187,29 +100,77 @@ if ($conn->connect_error) {
             </div>
         </div>
     </header>
-
-    <section class="login-section">
+    <!-- Calculadora de Calorías -->
+    <section class="product-section">
         <div class="container">
-            <div class="form-wrapper">
-                <h3 class="login-title">Login</h3>
-                <?php if (!empty($general_error)) { echo "<p class='error-message'>$general_error</p>"; } ?>
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <div class="calculator-container">
+                <h2>Calculadora de Calorías</h2>
+                <form action="calorie-calculator.php" method="post">
                     <div class="form-group">
-                        <label for="username">Nombre de usuario:</label>
-                        <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required>
-                        <?php if (!empty($username_error)) { echo "<p class='error-message'>$username_error</p>"; } ?>
+                        <label for="weight">Peso (kg):</label>
+                        <input type="number" class="form-control" id="weight" name="weight" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Contraseña:</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                        <?php if (!empty($password_error)) { echo "<p class='error-message'>$password_error</p>"; } ?>
+                        <label for="age">Edad:</label>
+                        <input type="number" class="form-control" id="age" name="age" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                    <div class="form-group">
+                        <label for="height">Altura (cm):</label>
+                        <input type="number" class="form-control" id="height" name="height" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="activity">Nivel de actividad física:</label>
+                        <select class="form-control" id="activity" name="activity" required>
+                            <option value="1.2">Sedentario (poco o ningún ejercicio)</option>
+                            <option value="1.375">Ejercicio ligero (1-3 días a la semana)</option>
+                            <option value="1.55">Ejercicio moderado (3-5 días a la semana)</option>
+                            <option value="1.725">Ejercicio fuerte (6-7 días a la semana)</option>
+                            <option value="1.9">Ejercicio muy fuerte (dos veces al día, entrenamientos duros)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal">Objetivo:</label>
+                        <select class="form-control" id="goal" name="goal" required>
+                            <option value="mantener">Mantener el peso</option>
+                            <option value="perdida">Perder peso</option>
+                            <option value="ganancia">Ganar peso</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Calcular</button>
                 </form>
+
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $weight = $_POST['weight'];
+                    $age = $_POST['age'];
+                    $height = $_POST['height'];
+                    $activity = $_POST['activity'];
+                    $goal = $_POST['goal'];
+
+                    // Calcular la TMB (Tasa Metabólica Basal) usando la fórmula de Harris-Benedict
+                    // Asumiendo que es una mujer para la fórmula, puedes ajustar según el sexo del usuario.
+                    $tmb = 655 + (9.6 * $weight) + (1.8 * $height) - (4.7 * $age);
+                    
+                    // Calcular las calorías diarias según el nivel de actividad
+                    $calories = $tmb * $activity;
+                    
+                    // Ajustar las calorías según el objetivo
+                    if ($goal == 'perdida') {
+                        $calories -= 500; // Deficit calórico para perder peso
+                    } elseif ($goal == 'ganancia') {
+                        $calories += 500; // Superávit calórico para ganar peso
+                    }
+
+                    echo "<div class='calculator-container'>
+                            <h2>Resultado</h2>
+                            <p>Para tu objetivo de <strong>" . htmlspecialchars($goal) . "</strong> peso, deberías consumir aproximadamente <strong>" . round($calories) . "</strong> calorías al día.</p>
+                          </div>";
+                }
+                ?>
             </div>
         </div>
     </section>
-
+    <!-- Footer -->
     <footer>
         <div class="footer">
             <div class="container">
@@ -233,8 +194,11 @@ if ($conn->connect_error) {
             </div>
         </div>
     </footer>
-
+    <!-- Javascript files-->
     <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/custom.js"></script>
 </body>
 </html>

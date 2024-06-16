@@ -32,6 +32,10 @@ session_start();
             color: blue;
             text-decoration: underline;
         }
+		.clients_box .name-margin{
+          padding-left: 50px;
+          border: none;
+      }
         /* Botón de Volver Arriba */
         #topBtn {
             display: none; /* Oculto por defecto */
@@ -56,6 +60,7 @@ session_start();
             background-color: black; /* Color de fondo negro al pasar el cursor */
             color: white; /* Color de texto blanco */
         }
+
         #myCarousel {
             margin-bottom: 100px;
         }
@@ -78,6 +83,49 @@ session_start();
 
         .header .navigation {
             margin-bottom: 0px; /* Asegúrate de que no haya margen inferior */
+        }
+
+        .name-margin {
+            margin-left: 20px; /* Ajusta este valor según sea necesario */
+        }
+
+        #cookieConsent {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .cookieConsentContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cookieConsentContainer p {
+            margin: 0;
+            padding: 0 10px;
+        }
+
+        .cookieButton {
+            background-color: #03cafc;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .cookieButton:hover {
+            background-color: #028aa8;
         }
     </style>
 </head>
@@ -107,10 +155,16 @@ session_start();
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="index.php">Home</a>
+                                        <a class="nav-link" href="index.php">Inicio</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="about.php">Sobre nosotros</a>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Funcionalidades Fitness
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="calorie-calculator.php">Calculadora de calorias</a>
+                                            <a class="dropdown-item" href="1RM-calculator.php">Calculadora de 1RM</a>
+                                        </div>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="shop.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -129,10 +183,10 @@ session_start();
                                             <a class="nav-link" href="micuenta.php">Mi Cuenta</a>
                                         </li>
                                     <?php else: ?>
-                                        <li class="nav-item d_none login_btn">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="login.php">Iniciar sesión</a>
                                         </li>
-                                        <li class="nav-item d_none">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="registro.php">Registro</a>
                                         </li>
                                     <?php endif; ?>
@@ -203,7 +257,7 @@ session_start();
             <div class="row d_flex">
                 <div class="col-md-5">
                     <div class="about_img">
-                        <figure><img src="images/Default_Un_hombre_humano_levantando_una_macuerna_entrenando_bi_0.png" alt="#"/></figure>
+                        <figure><img src="images/sobrenosotros.jpg" alt="#"/></figure>
                     </div>
                 </div>
                 <div class="col-md-7">
@@ -218,8 +272,6 @@ session_start();
                             En GYMGUIDE, nos enorgullece ofrecer una experiencia única que se distingue por: <br> <br>
                             <b>Entrenadores altamente calificados y dedicados:</b> Nuestro equipo de entrenadores está formado por profesionales apasionados y altamente capacitados que están comprometidos con tu éxito. Ellos trabajarán contigo para desarrollar un plan de entrenamiento personalizado que se adapte a tus necesidades, habilidades y objetivos específicos.
                             <br><br><b>Suplementación de calidad:</b> Nos asociamos con las marcas líderes en el mercado para ofrecerte una amplia gama de suplementos de alta calidad que complementarán tu dieta y maximizarán tus resultados.
-                            <br><br><span style="color: red; weight: bold;">Aviso legal: </span>GymGuide es un proyecto de fin de grado. Las ventas de productos, rutinas y/o dietas presentadas en esta plataforma no son reales y se utilizan únicamente con fines académicos y demostrativos.
-                    </p>
                         </div>
                         <a class="read_more" id="read-more">Leer más</a>
                     </div>
@@ -262,10 +314,9 @@ session_start();
                                     <div class="carousel-caption ">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="clients_box">
-                                                    <figure><img src="images/our.png" alt="#"/></figure>
+                                                <div class="clients_box name-margin">
                                                     <h3>Juan Utrera</h3>
-                                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact  a more-or-less normal distribution of letters,</p>
+                                                    <p>Juan Utrera ha sido el responsable principal de la programación de la web y la base de datos en el proyecto GymGuide. Su enfoque ha estado en la implementación de funcionalidades clave, asegurando que la plataforma sea robusta y eficiente. Con su experiencia en programación y gestión de bases de datos, Juan ha desarrollado un sistema que es tanto funcional como escalable.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -277,10 +328,9 @@ session_start();
                                     <div class="carousel-caption">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="clients_box">
-                                                    <figure><img src="images/our.png" alt="#"/></figure>
+                                                <div class="clients_box name-margin">
                                                     <h3>David Miñano</h3>
-                                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact  a more-or-less normal distribution of letters,</p>
+                                                    <p>David Miñano ha desempeñado un papel fundamental en la organización del proyecto y la generación de ideas innovadoras. Además, se ha encargado de la documentación del proyecto, asegurando que todos los aspectos del desarrollo estén claramente registrados y bien estructurados. Su habilidad para coordinar y documentar ha sido crucial para el éxito y la claridad del proyecto GymGuide.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -307,8 +357,8 @@ session_start();
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <ul class="location_icon">
-                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
+                            <li><a href="https://www.google.com/maps?q=C/San+Benito+6" target="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="mailto:contacto@gymguide.es"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> contacto@gymguide.es</li>
                         </ul>
                     </div>
                 </div>
@@ -356,5 +406,29 @@ session_start();
             document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE y Opera
         }
     </script>
+  	<!-- Cookie Consent -->
+<div id="cookieConsent">
+    <div class="cookieConsentContainer">
+        <p>Este sitio web utiliza cookies para mejorar su experiencia. Al continuar navegando, acepta nuestro uso de cookies.</p>
+        <button id="acceptCookies" class="cookieButton">Aceptar</button>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const cookieConsent = document.getElementById('cookieConsent');
+    const acceptCookies = document.getElementById('acceptCookies');
+
+    // Show the cookie consent if not accepted before
+    if (!localStorage.getItem('cookiesAccepted')) {
+        cookieConsent.style.display = 'block';
+    }
+
+    // Set cookiesAccepted to true when the button is clicked
+    acceptCookies.addEventListener('click', function () {
+        localStorage.setItem('cookiesAccepted', 'true');
+        cookieConsent.style.display = 'none';
+    });
+});
+</script>
 </body>
 </html>
