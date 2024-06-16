@@ -6,78 +6,77 @@ error_reporting(E_ALL);
 
 session_start();
 
+// Incluir configuración de la base de datos
+require 'config.php';
+
 // Inicializar variables para almacenar mensajes de error
 $username_error = $email_error = $password_error = $password_repeat_error = $general_error = "";
 
 // Inicializar variables para mantener los valores ingresados
 $username = $email = "";
 
-// Configuración de la base de datos
-$servername = "db5015817129.hosting-data.io";
-$username_db = "dbu3154185";
-$password_db = "A1234567.tfg";
-$dbname = "dbs12897556";
+// Verificar si el formulario fue enviado
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtener los datos del formulario
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $pass = $_POST['password'];
+    $pass_repeat = $_POST['password-repeat'];
 
-// Crear conexión
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-
-// Verificar conexión
-if ($conn->connect_error) {
-    $general_error = "Connection failed: " . $conn->connect_error;
-} else {
-    // Verificar si el formulario fue enviado
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Obtener los datos del formulario
-        $username = $_POST['username'];
-        $email = $_POST['email'];
-        $pass = $_POST['password'];
-        $pass_repeat = $_POST['password-repeat'];
-
-        // Verificar que las contraseñas coincidan
-        if ($pass !== $pass_repeat) {
-            $password_repeat_error = "Las contraseñas no coinciden.";
-        }
-
-        // Verificar si el nombre de usuario ya existe en la tabla `gymguide_usuarios`
-        if (empty($password_repeat_error)) {
-            $sql_check_user = "SELECT COUNT(*) FROM gymguide_usuarios WHERE Nom_usu = ?";
-            $stmt_check_user = $conn->prepare($sql_check_user);
-            $stmt_check_user->bind_param("s", $username);
-            $stmt_check_user->execute();
-            $stmt_check_user->bind_result($user_count);
-            $stmt_check_user->fetch();
-            $stmt_check_user->close();
-
-            if ($user_count > 0) {
-                $username_error = "El nombre de usuario ya existe. Por favor, elige otro nombre de usuario.";
-            }
-        }
-
-        // Si no hay errores, proceder con la inserción en la base de datos
-        if (empty($username_error) && empty($password_repeat_error)) {
-            // Encriptar la contraseña
-            $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
-
-            // Preparar y ejecutar la consulta SQL
-            $sql = "INSERT INTO gymguide_usuarios (Nom_usu, Correo, Passwd) VALUES (?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            if ($stmt === false) {
-                $general_error = "Error en la preparación de la consulta: " . $conn->error;
-            } else {
-                $stmt->bind_param("sss", $username, $email, $hashed_password);
-
-                if ($stmt->execute()) {
-                    $general_error = "Registro exitoso!";
-                } else {
-                    $general_error = "Error: " . $sql . "<br>" . $conn->error;
-                }
-                $stmt->close();
-            }
-        }
-
-        // Cerrar la conexión
-        $conn->close();
+    // Validar correo electrónico
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $email_error = "Correo electrónico no válido.";
     }
+
+    // Verificar que las contraseñas coincidan
+    if ($pass !== $pass_repeat) {
+        $password_repeat_error = "Las contraseñas no coinciden.";
+    }
+
+    // Verificar requisitos de la contraseña
+    if (strlen($pass) < 8 || !preg_match("/[A-Z]/", $pass) || !preg_match("/[a-z]/", $pass) || !preg_match("/[0-9]/", $pass) || !preg_match("/[\W]/", $pass)) {
+        $password_error = "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial.";
+    }
+
+    // Verificar si el nombre de usuario ya existe en la tabla `gymguide_usuarios`
+    if (empty($username_error) && empty($email_error) && empty($password_error) && empty($password_repeat_error)) {
+        $sql_check_user = "SELECT COUNT(*) FROM gymguide_usuarios WHERE Nom_usu = ?";
+        $stmt_check_user = $conn->prepare($sql_check_user);
+        $stmt_check_user->bind_param("s", $username);
+        $stmt_check_user->execute();
+        $stmt_check_user->bind_result($user_count);
+        $stmt_check_user->fetch();
+        $stmt_check_user->close();
+
+        if ($user_count > 0) {
+            $username_error = "El nombre de usuario ya existe. Por favor, elige otro nombre de usuario.";
+        }
+    }
+
+    // Si no hay errores, proceder con la inserción en la base de datos
+    if (empty($username_error) && empty($email_error) && empty($password_error) && empty($password_repeat_error)) {
+        // Encriptar la contraseña
+        $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
+
+        // Preparar y ejecutar la consulta SQL
+        $sql = "INSERT INTO gymguide_usuarios (Nom_usu, Correo, Passwd) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        if ($stmt === false) {
+            $general_error = "Error en la preparación de la consulta: " . $conn->error;
+        } else {
+            $stmt->bind_param("sss", $username, $email, $hashed_password);
+
+            if ($stmt->execute()) {
+                $general_error = "Registro exitoso!";
+            } else {
+                $general_error = "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $stmt->close();
+        }
+    }
+
+    // Cerrar la conexión
+    $conn->close();
 }
 ?>
 
@@ -135,6 +134,39 @@ if ($conn->connect_error) {
             margin-bottom: 20px;
         }
     </style>
+    <script>
+        function validateForm() {
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var passwordRepeat = document.getElementById("password-repeat").value;
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W]).{8,}$/;
+            var valid = true;
+
+            if (!emailPattern.test(email)) {
+                document.getElementById("email_error").textContent = "Correo electrónico no válido.";
+                valid = false;
+            } else {
+                document.getElementById("email_error").textContent = "";
+            }
+
+            if (!passwordPattern.test(password)) {
+                document.getElementById("password_error").textContent = "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial.";
+                valid = false;
+            } else {
+                document.getElementById("password_error").textContent = "";
+            }
+
+            if (password !== passwordRepeat) {
+                document.getElementById("password_repeat_error").textContent = "Las contraseñas no coinciden.";
+                valid = false;
+            } else {
+                document.getElementById("password_repeat_error").textContent = "";
+            }
+
+            return valid;
+        }
+    </script>
 </head>
 <body class="main-layout">
     <header>
@@ -171,7 +203,6 @@ if ($conn->connect_error) {
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="calorie-calculator.php">Calculadora de calorias</a>
                                             <a class="dropdown-item" href="1RM-calculator.php">Calculadora de 1RM</a>
-                                            <a class="dropdown-item" href="bloquesdefuerza.php">Programación en Bloques de fuerza</a>
                                         </div>
                                     </li>
                                     <li class="nav-item dropdown">
@@ -212,7 +243,7 @@ if ($conn->connect_error) {
             <div class="form-wrapper">
                 <h3 class="register-title">Registra una cuenta</h3>
                 <?php if (!empty($general_error)) { echo "<p class='error-message'>$general_error</p>"; } ?>
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" onsubmit="return validateForm()">
                     <div class="form-group">
                         <label for="username">Nombre de usuario:</label>
                         <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required>
@@ -221,17 +252,17 @@ if ($conn->connect_error) {
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
-                        <?php if (!empty($email_error)) { echo "<p class='error-message'>$email_error</p>"; } ?>
+                        <p class='error-message' id='email_error'><?php if (!empty($email_error)) { echo $email_error; } ?></p>
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña:</label>
                         <input type="password" class="form-control" id="password" name="password" required>
-                        <?php if (!empty($password_error)) { echo "<p class='error-message'>$password_error</p>"; } ?>
+                        <p class='error-message' id='password_error'><?php if (!empty($password_error)) { echo $password_error; } ?></p>
                     </div>
                     <div class="form-group">
                         <label for="password-repeat">Repite la contraseña:</label>
                         <input type="password" class="form-control" id="password-repeat" name="password-repeat" required>
-                        <?php if (!empty($password_repeat_error)) { echo "<p class='error-message'>$password_repeat_error</p>"; } ?>
+                        <p class='error-message' id='password_repeat_error'><?php if (!empty($password_repeat_error)) { echo $password_repeat_error; } ?></p>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Registrar</button>
                 </form>
@@ -245,8 +276,8 @@ if ($conn->connect_error) {
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <ul class="location_icon">
-                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
-                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> tfg.gymguide@gmail.com</li>
+                            <li><a href="https://www.google.com/maps?q=C/San+Benito+6" target="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i></a><br> C/San Benito 6</li>
+                            <li><a href="mailto:contacto@gymguide.es"><i class="fa fa-envelope" aria-hidden="true"></i></a><br> contacto@gymguide.es</li>
                         </ul>
                     </div>
                 </div>

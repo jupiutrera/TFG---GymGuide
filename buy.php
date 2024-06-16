@@ -130,7 +130,6 @@ $conn->close();
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="calorie-calculator.php">Calculadora de calorias</a>
                                             <a class="dropdown-item" href="1RM-calculator.php">Calculadora de 1RM</a>
-                                            <a class="dropdown-item" href="bloquesdefuerza.php">Programación en Bloques de fuerza</a>
                                         </div>
                                     </li>
                                     <li class="nav-item dropdown">
